@@ -1,0 +1,32 @@
+<table>
+    <thead>
+      <tr>
+        <th (click)="sortBy('id')">ID</th>
+        <th (click)="sortBy('name')">Name</th>
+        <th (click)="sortBy('email')">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div>
+    <button (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+    <button *ngFor="let page of totalPages" [disabled]="page === currentPage" (click)="onPageChange(page)">
+        {{ page }}
+      </button>
+    <button (click)="onNextPage()" [disabled]="currentPage === totalPages.length">Next</button>
+    <select [(ngModel)]="limit" (change)="onLimitChange()">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+      </select>
+
+  </div>
+  

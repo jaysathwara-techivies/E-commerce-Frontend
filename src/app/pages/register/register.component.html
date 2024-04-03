@@ -1,0 +1,29 @@
+<div class="card">
+    <form action="" [formGroup]="registerForm">
+        <div class="form-field">
+            <label for="email">
+                Email
+            </label>
+            <input type="email" name="email" formControlName="email" placeholder="email">
+        </div>
+        <div class="form-field">
+            <label for="username">
+                UserName
+            </label>
+            <input type="text" name="username" formControlName="username" placeholder="userName">
+        </div>
+        <div class="form-field">
+            <label for="password">
+                Password
+            </label>
+            <input type="password" name="password" formControlName="password" placeholder="Password">
+        </div>
+        <div class="form-field">
+            <label for="cnfpassword">
+                Confirm Password
+            </label>
+            <input type="password" name="cnfpassword" formControlName="confirmPassword" placeholder="Confirm Password">
+        </div>
+    </form>
+    <button (click)="register()">Register</button>
+</div>
