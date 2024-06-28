@@ -25,7 +25,7 @@
             <label for="limit">Usage Limit</label>
             <input type="number" id="limit" class="form-control" placeholder="Usage Limit" formControlName="usageLimit">
         </div>
-        <button type="submit" class="btn btn-primary mt-3" (click)="submiForm()">Add Coupon</button>
+        <button type="submit" class="btn btn-primary mt-3" (click)="submiForm()" [disabled]="couponForm.invalid">Add Coupon</button>
 
     </form>
 </div>

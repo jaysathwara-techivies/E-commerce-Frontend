@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment'
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -20,10 +20,10 @@ export class AddCouponComponent {
 
   createForm() {
     this.couponForm = this.fb.group({
-      code: [null],
-      discount: [null],
-      expiryDate: [null],
-      usageLimit: [null]
+      code: [null, Validators.required],
+      discount: [null, Validators.required],
+      expiryDate: [null, Validators.required],
+      usageLimit: [null, Validators.required]
     })
   }
 

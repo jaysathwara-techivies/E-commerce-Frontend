@@ -94,7 +94,7 @@ cancelOrder(order: any) {
       (error:any)=>{
         console.log('error: ', error);
         this.utilService.openSnackBar({
-          text: error?.error?.error
+          text: 'Order cannot be canceled after 7 days'
         })
         reject(error)
       }
