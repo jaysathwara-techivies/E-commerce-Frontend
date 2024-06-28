@@ -1,0 +1,67 @@
+<div class="checkout-container">
+  <div class="product-summary">
+    <div *ngFor="let item of checkOutItems">
+
+      <h2>Pay</h2>
+      <h3>₹{{item.total}}</h3>
+      <div class="product-list" *ngFor="let product of item.items">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <img [src]="product.img" alt="{{product.name}}" class="img-thumbnail me-3"
+              style="width: 100px; height: 100px;">
+            <h6 class="mb-0">{{product.name}}</h6>
+          </div>
+          <div>
+            <span>{{product.price}} X {{product.quantity}}</span>
+          </div>
+          <div class="ms-3">
+            <span class="text-muted">₹{{product.price * product.quantity}}</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="mt-5">
+
+        <div class="subtotal">
+          <span>Subtotal</span>
+          <span>{{subtotal}}</span>
+        </div>
+        <div class="discount d-flex justify-content-between" *ngIf="discount">
+          <span>discount%</span>
+          <span>-{{discountedAmount}}</span>
+        </div>
+        <div class="total-due">
+          <span>Total</span>
+          <span>{{ discount ? calculateTotal() : subtotal}}</span>
+        </div>
+        <div class="coupon input-group">
+          <input type="text" class="form-control" [formControl]="code" placeholder="coupon code" matInput>
+          <button class="btn btn-primary" (click)="applyCode()">Apply Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="payment-section">
+    <button mat-raised-button color="primary" class="apple-pay-btn">Google Pay</button>
+    <p>Or pay with card</p>
+    <form>
+      <section>
+        <mat-label>Default address</mat-label>
+    <mat-checkbox  type="checkbox" name="add" id="" (change)="onChecck($event)"></mat-checkbox>
+      </section>
+      <mat-form-field appearance="fill">
+        <mat-label>Address</mat-label>
+        <input matInput type="text" [formControl]="defaultAddress" required>
+      </mat-form-field>
+      <h3>Payment details</h3>
+      <ngx-stripe-card
+      [options]="cardOptions"
+      [elementsOptions]="elementsOptions"
+      #cardComponent>
+    </ngx-stripe-card>
+    <button (click)="handlePayment()">Pay</button>
+
+      <!-- <button mat-raised-button color="primary" type="submit" (click)="submit()">Buy Now</button> -->
+    </form>
+  </div>
+</div>

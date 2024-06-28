@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="d-flex justify-content-around flex-wrap">
+        <div *ngFor="let product of products" class="card mt-3" style="width: 18rem;">
+            <img [src]="product.img" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">Description: {{product.description}}</p>
+                <p class="card-text">Price: ₹{{product.price}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+::ng-deep .review-modal {
+    // max-width: 480px !important;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+.card {
+    position: relative;
+    max-height: 80vh; /* Set maximum height for the card */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+.modal-body {
+    padding-bottom: 60px; /* Adjust padding to accommodate the footer */
+}
+
+.card-body {
+    padding: 10px 15px; /* Add padding to each review card body */
+}
+
+.footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #f8f9fa; /* Add background color to the footer */
+}
+
+.input-group {
+    margin-bottom: 10px; /* Add margin to the input group */
+}

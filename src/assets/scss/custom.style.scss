@@ -1,0 +1,31 @@
+.mat-snack-bar-container {
+    &.success {
+      color: rgb(255 255 255);
+      background: rgb(76 175 80);
+      box-shadow: 0 3px 5px -1px rgb(76 175 80 / 20%), 
+                  0 6px 10px 0 rgb(76 175 80 / 14%), 
+                  0 1px 18px 0 rgb(76 175 80 / 12%);
+    }
+    &.danger {
+      color: rgb(255 255 255);
+      background:#c00;
+      box-shadow: 0 3px 5px -1px rgb(201 0 0 / 20%), 0 6px 10px 0 rgb(201 0 0 / 14%), 0 1px 18px 0 rgb(201 0 0 / 12%);
+    }
+    &.warning {
+      color: rgb(255 255 255);
+      background:#FDAF17;
+      box-shadow: 0 3px 5px -1px rgb(253 175 23 / 20%), 0 6px 10px 0 rgb(253 175 23 / 14%), 0 1px 18px 0 rgb(253 175 23 / 12%);
+    }
+    &.info {
+      color: rgb(255 255 255);
+      background:#0075FF;
+      box-shadow: 0 3px 5px -1px rgb(0 117 255 / 20%), 0 6px 10px 0 rgb(0 117 255 / 14%), 0 1px 18px 0 rgb(0 117 255 / 12%);
+    }
+    // .mat-simple-snackbar {
+    //   font-family: 'Gilroy-Regular';
+    // }
+    // .mat-button {
+    //   outline: 0;
+    //   color: #fff;
+    // }
+  }

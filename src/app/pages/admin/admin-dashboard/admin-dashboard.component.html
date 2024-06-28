@@ -1,0 +1,56 @@
+<div class="container mt-5">
+    <h2>Admin Dashboard - Add New Product</h2>
+    <form [formGroup]="productForm" enctype="application/x-www-form-urlencoded">
+      <div class="mb-3">
+        <label for="name" class="form-label">Product Name</label>
+        <input id="name" formControlName="name" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" formControlName="description" class="form-control"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input id="price" type="number" formControlName="price" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <mat-form-field appearance="fill" class="example-full-width form-control">
+          <mat-label>Select a category</mat-label>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let category of categories" [value]="category.name">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <div class="form-check">
+          <input type="radio" id="men" formControlName="gender" class="form-check-input" value="Men" />
+          <label for="men" class="form-check-label">Men</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="women" formControlName="gender" class="form-check-input" value="Women" />
+          <label for="women" class="form-check-label">Women</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="kids" formControlName="gender" class="form-check-input" value="Kids" />
+          <label for="kids" class="form-check-label">Kids</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="beauty" formControlName="gender" class="form-check-input" value="Beauty" />
+          <label for="kids" class="form-check-label">Beauty</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input id="stock" type="number" formControlName="stock" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="img" class="form-label">Image URL</label>
+        <input id="img" name="img" type="text" formControlName="img" class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="submitProduct()" [disabled]="productForm.invalid">Add Product</button>
+    </form>
+  </div>

@@ -1,0 +1,31 @@
+<div class="container my-5">
+    <h1>
+        Add Coupons
+    </h1>
+    <form action="" [formGroup]="couponForm">
+        <div class="form-group">
+            <label for="code">Coupon Code</label>
+            <input type="text" id="code" class="form-control" placeholder="Coupon Code" formControlName="code">
+        </div>
+        <div class="form-group">
+            <label for="discount">Discount</label>
+            <input type="number" id="discount" class="form-control" placeholder="Discount" formControlName="discount">
+        </div>
+        <div class="form-group">
+            <label for="discount">Expiry Date</label>
+            <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" class="form-control" formControlName="expiryDate">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+        </div>
+        <div class="form-group">
+            <label for="limit">Usage Limit</label>
+            <input type="number" id="limit" class="form-control" placeholder="Usage Limit" formControlName="usageLimit">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3" (click)="submiForm()">Add Coupon</button>
+
+    </form>
+</div>

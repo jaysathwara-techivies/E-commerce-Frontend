@@ -21,22 +21,21 @@ export class RegisterComponent {
 
   createForm() {
     this.registerForm = this.formBuilder.group({
+      name: [null, Validators.required],
       email: [null, Validators.required],
-      username: [null, Validators.required],
       password: [null, Validators.required],
-      confirmPassword: [null, Validators.required],
+      
     })
   }
 
 
   register() {
     return new Promise((resolve, reject) => {
-      let url = "http://localhost:3000/register";
+      let url = "http://localhost:5000/api/user/register";
       let payload = {
+        name: this.registerForm.value.name,
         email: this.registerForm.value.email,
-        username: this.registerForm.value.username,
         password: this.registerForm.value.password,
-        confirmPassword: this.registerForm.value.confirmPassword,
       }
 
       this.authService.apiCall("POST", url, payload).subscribe(
@@ -51,5 +50,8 @@ export class RegisterComponent {
         }
       )
     }).catch(e => e)
+  }
+  goToLogin() {
+    this.router.navigate(['/login'])
   }
 }

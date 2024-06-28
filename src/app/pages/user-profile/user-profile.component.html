@@ -1,0 +1,90 @@
+<div class="container">
+    <h1>My Account</h1>
+    <div class="profile-content p-2">
+        <div id="account-settings" class="card mt-2">
+            <div class="card-header">
+                <h2>Account Settings</h2>
+            </div>
+            <div class="card-body">
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('resetpassword')">
+                    <h5>Change Password</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+                <div role="button" class="card-text d-flex justify-content-between mt-2" (click)="goToPage('profile')">
+                    <h5>Change Profile Name</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div id="orders" class="card mt-2">
+            <div class="card-header">
+                <h2>Orders</h2>
+            </div>
+            <div role="button" class="card-body">
+
+                <div class="card-text d-flex justify-content-between" (click)="goToPage('orderhistory')">
+                    <h5>Order History</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+
+        </div>
+        <div id="wishlist" class="card mt-2">
+            <div class="card-header">
+
+                <h2>Wishlist</h2>
+            </div>
+            <div class="card-body">
+
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('wishlist')">
+                    <h5>Your Wishlist</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div id="addresses" class="card mt-2">
+            <div class="card-header">
+                <h2>Addresses</h2>
+            </div>
+            <div class="card-body">
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('address')">
+                    <h5>Change Addresses</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div id="products" class="card mt-2" *ngIf="isAdmin === 'admin'">
+            <div class="card-header">
+                <h2>Products</h2>
+            </div>
+            <div class="card-body">
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('products')">
+                    <h5>Edit Product</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div id="category" class="card mt-2" *ngIf="isAdmin === 'admin'">
+            <div class="card-header">
+                <h2>Category</h2>
+            </div>
+            <div class="card-body">
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('category')">
+                    <h5>Add Category</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div id="coupon" class="card mt-2" *ngIf="isAdmin === 'admin'">
+            <div class="card-header">
+                <h2>Coupon</h2>
+            </div>
+            <div class="card-body">
+                <div role="button" class="card-text d-flex justify-content-between" (click)="goToPage('coupon')">
+                    <h5>Add Coupon</h5>
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

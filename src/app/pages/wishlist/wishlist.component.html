@@ -1,0 +1,31 @@
+<div class="container mt-5">
+    <h1 class="mb-4">My Wishlist</h1>
+    <div class="row">
+        <ng-container *ngIf="wishlist.length > 0; else noWishlist">
+            <div class="col-md-4" *ngFor="let product of wishlist">
+                <div class="card mb-4">
+                    <div style="height: 250px; overflow: hidden;">
+                        <img [src]="product.img" class="card-img-top img-fluid" alt="{{ product.name }}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ product.price | currency }}</p>
+                        <div class="d-flex justify-content-between align-center">
+
+                            <a href="#" class="btn btn-primary">View Product</a>
+                            <button class="btn btn-warning" (click)="removeFromWishlist(product._id)">
+                                <mat-icon>favorite</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noWishlist>
+            <div class="col-md-12 text-center">
+                <p>No wishlist found</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

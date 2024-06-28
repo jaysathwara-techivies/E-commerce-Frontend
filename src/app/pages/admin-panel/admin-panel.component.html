@@ -1,0 +1,18 @@
+<!-- dashboard.component.html -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Dashboard Overview</h2>
+    <div class="tabs">
+        <button class="tablink" [ngClass]="{'active': selectedTab === 'pending'}" (click)="openTab('pending')">Pending Orders</button>
+        <button class="tablink" [ngClass]="{'active': selectedTab === 'shipped'}" (click)="openTab('shipped')">Shipped Orders</button>
+        <button class="tablink" [ngClass]="{'active': selectedTab === 'canceled'}" (click)="openTab('canceled')">Canceled Orders</button>
+    </div>
+    <div [ngClass]="{'tabcontent': true, 'show': selectedTab === 'pending'}" id="pending">
+        <app-pending-orders></app-pending-orders>
+    </div>
+    <div [ngClass]="{'tabcontent': true, 'show': selectedTab === 'shipped'}" id="shipped">
+        <app-shipped-orders></app-shipped-orders>
+    </div>
+    <div [ngClass]="{'tabcontent': true, 'show': selectedTab === 'canceled'}" id="canceled">
+        <app-canceled-orders></app-canceled-orders>
+    </div>
+</div>

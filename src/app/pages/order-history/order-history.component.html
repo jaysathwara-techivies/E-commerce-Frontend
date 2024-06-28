@@ -1,0 +1,38 @@
+<div class="container mt-5">
+    <h2>Order History</h2>
+    <div *ngIf="orders.length > 0; else noOrders">
+      <div *ngFor="let order of orders" class="card mb-3">
+        <div class="card-header">
+          <strong>Order ID:</strong> {{ order._id }} <br>
+          <strong>Date:</strong> {{ order.createdAt | date:'M/d/yy, h:mm a' }}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Total: ₹{{ order.total }}</h5>
+          <p class="card-text"><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
+          <p class="card-text"><strong>Status:</strong> {{ order.status }}</p>
+          <h6>Items:</h6>
+          <ul class="list-group">
+            <li *ngFor="let item of order.items" class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <img [src]="item.product.img" alt="{{item.product.name}}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+                {{ item.product.name }} (₹{{ item.price }} x {{ item.quantity }})
+              </div>
+              <div>
+                <span>₹{{ item.price * item.quantity }}</span>
+              </div>
+            </li>
+          </ul>
+          <div class="mt-2" (click)="openDialog(order)" *ngIf="order.status !== 'canceled'">
+            <button class="btn btn-danger">Cancel Order</button>
+          </div>
+          <div class="mt-2" *ngIf="order.status === 'canceled'">
+            <p>The Order Has Been Canceled...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noOrders>
+      <p class="text-center">You have no orders.</p>
+    </ng-template>
+  </div>
+  

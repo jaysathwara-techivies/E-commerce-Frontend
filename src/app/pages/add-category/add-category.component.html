@@ -1,0 +1,36 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Add Category</h2>
+    <form [formGroup]="categoryForm">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" formControlName="name">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" class="form-control" formControlName="description">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3" (click)="submiForm()">Add Category</button>
+    </form>
+
+    <div class="my-5 ">
+        <h2 class="mb-4">Categories</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of categories">
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td (click)="openDialog(category._id)">
+                        <mat-icon class="text-danger" role="button" *ngIf="category.ShowDeleteButton">delete</mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

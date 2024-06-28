@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <h1>Most Selling Product</h1>
+    <div class="d-flex justify-content-around flex-wrap">
+        <div *ngFor="let product of products; index as i">
+            <div class="card" style="width: 18rem;">
+                <img src="{{product.productDetails.img}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.productDetails.name}}</h5>
+                    <p class="card-text">Description: {{product.productDetails.description}}</p>
+                    <p class="card-text">Price: ₹{{product.productDetails.price}}</p>
+                    <div class="d-flex justify-content-between">
+    
+                        <button (click)="addToCart(product, i)" [disabled]="isButtonDisabled(product._id)" class="btn btn-primary">Add to Cart</button>
+                        <button class="btn btn-warning" (click)="toggleWishlist(product._id)">
+                            <mat-icon *ngIf="isProductInWishlist(product._id)">favorite</mat-icon>
+                            <mat-icon *ngIf="!isProductInWishlist(product._id)">favorite_outline</mat-icon>
+                        </button>
+                          <button class="btn btn-info" (click)="openReviewModal(product)">
+                            <mat-icon>rate_review</mat-icon>
+                          </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

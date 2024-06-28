@@ -1,0 +1,45 @@
+<div class="card ">
+
+    <div class="card-header">
+        <h2 class="modal-title">Review</h2>
+    </div>
+    <div class="modal-body" *ngIf="reviews.length">
+        <div *ngFor="let review of reviews">
+            <div class="card-body">
+                <div class="d-flex lg">
+                    <h3 class="card-title me-2">{{review.userId.name}}</h3>
+                    <button  *ngIf="review.userId._id ===  userId" class="btn btn-sm btn-danger" (click)="deleteReview(review)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button *ngIf="review.userId._id ===  userId" class="btn btn-primary ms-2" (click)="editReview(review)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                </div>
+                <p class="card-text">{{review.reviewText}}</p>
+                <p class="card-text">{{review.rating}}/5</p>
+                <strong>Date:</strong> {{ review.createdAt | date:'M/d/yy, h:mm a' }}
+
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!reviews.length" class="d-flex justify-content-center my-5">
+        <p>There Are No Reviews Yet:(</p>
+    </div>
+    <div class="footer lg">
+        <form [formGroup]="reviewForm">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Review Text" aria-describedby="basic-addon2" formControlName="reviewText">
+                <select class="form-select" id="inputGroupSelect01" formControlName="rating">
+                    <option selected>Choose...</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <button class="btn btn-lg btn-primary" (click)="submit()"[disabled]="reviewForm.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

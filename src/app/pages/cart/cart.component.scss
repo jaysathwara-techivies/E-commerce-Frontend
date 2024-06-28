@@ -1,0 +1,29 @@
+::ng-deep .cart-modal {
+    // max-width: 480px !important;
+    width: 100%;
+}
+.modal-content {
+  padding: 20px;
+}
+.modal-header {
+  border-bottom: none;
+}
+.modal-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.img-thumbnail {
+  object-fit: cover;
+}
+.coupon{
+  width: 40%;
+}
+
+.total-count {
+
+  display: flex;
+  width: 100%;
+  align-items: end;
+  flex-direction: column;
+
+}

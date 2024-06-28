@@ -28,7 +28,7 @@ export class LoginComponent {
 
   login() {
     return new Promise((resolve,reject) => {
-      let url = 'http://localhost:3000/login'
+      let url = 'http://localhost:5000/api/user/login'
       let payload = {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
@@ -36,8 +36,9 @@ export class LoginComponent {
       this.authService.apiCall('POST', url, payload).subscribe(
         async (response: any) => {
           if (response) {
-            const { token } = response;
-            localStorage.setItem('token', token);
+            const userData = JSON.stringify(response);
+            localStorage.setItem('credentials',userData);
+            this.router.navigate(['/dashboard'])
           }
           resolve(response);
         },
@@ -51,5 +52,8 @@ export class LoginComponent {
 
   openNewPage() {
     this.router.navigate(['/resetpassword'])
+  }
+  signup() {
+    this.router.navigate(['/register'])
   }
 }

@@ -1,0 +1,26 @@
+.sidenav-container {
+    height: 100vh;
+  }
+  
+  .mat-sidenav {
+    width: 250px; /* Set your desired width */
+  }
+  
+  .mat-toolbar {
+    background-color: #6c757d; /* Set your desired background color */
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .list-group-item {
+    background-color: transparent;
+    border: none;
+    color: #000;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f8f9fa; /* Set your desired hover color */
+  }
+  

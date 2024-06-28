@@ -1,0 +1,23 @@
+<div class="container d-flex justify-content-around flex-wrap">
+    <div *ngFor="let product of products; index as i">
+        <div class="card" style="width: 18rem;">
+            <img src="{{product.img}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">Description: {{product.description}}</p>
+                <p class="card-text">Price: ₹{{product.price}}</p>
+                <div class="d-flex justify-content-between">
+
+                    <button (click)="addToCart(product, i)" [disabled]="isButtonDisabled(product._id)" class="btn btn-primary">Add to Cart</button>
+                    <button class="btn" *ngIf="isAdmin === 'admin'" (click)="editProduct(product)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button class="btn btn-warning" (click)="toggleWishlist(product._id)">
+                        <mat-icon *ngIf="isProductInWishlist(product._id)">favorite</mat-icon>
+                        <mat-icon *ngIf="!isProductInWishlist(product._id)">favorite_outline</mat-icon>
+                      </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

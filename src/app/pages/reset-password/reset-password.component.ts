@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit{
 
   sendMail() {
     return new Promise((resolve, reject) => {
-      let url = 'http://localhost:3000/change-password'
+      let url = 'http://localhost:5000/change-password'
       let payload = { 
         email: this.resetForm.value.email
       }
@@ -69,7 +69,7 @@ export class ResetPasswordComponent implements OnInit{
   changePassword() {
     console.log('pw: ', this.resetPassword.value);
     return new Promise((resolve, reject) => {
-      let url = `http://localhost:3000/reset-password?token=${this.token}`;
+      let url = `http://localhost:5000/reset-password?token=${this.token}`;
       let payload = {
         password: this.resetPassword.value.password
       }

@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Cart Items</h1>
+<div mat-dialog-content>
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <div *ngFor="let item of cartItems" class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+      <div class="d-flex align-items-center">
+        <img [src]="item.img" alt="{{item.name}}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+        <div>
+          <h6 class="mb-0">{{item.name}}</h6>
+          <small class="text-muted">{{item.description}}</small>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <button mat-icon-button (click)="decrementQuantity(item)" class="btn btn-outline-secondary btn-sm">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <span class="mx-2">{{ item.quantity }}</span>
+        <button mat-icon-button (click)="incrementQuantity(item)" class="btn btn-outline-secondary btn-sm">
+          <mat-icon>add</mat-icon>
+        </button>
+        <div class="ms-3">
+          <span class="text-muted">₹{{item.price * item.quantity}}</span>
+        </div>
+      </div>
+      <div style="cursor: pointer;">
+        <button (click)="deleteItem(item)" class="btn btn-outline-danger btn-sm">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <!-- <div class="total-count">
+      <p *ngIf="!discount">Item Total: {{ calculateTotal() | currency }}</p>
+      <p *ngIf="discount">Total: {{ calculateTotal() | currency }}</p>
+      <p *ngIf="discount">Coupon Discount: {{ discount  }}%</p>
+    </div> -->
+  </div>
+  <ng-template #emptyCart>
+    <p class="text-center">Your cart is empty.</p>
+  </ng-template>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-between">
+  <button mat-button (click)="closeModal()" mat-dialog-close class="btn btn-secondary">Close</button>
+  <!-- <div *ngIf="cartItems.length">
+    <label for="add">Default Address:</label>
+    <input type="checkbox" name="add" id="" (change)="onChecck($event)">
+    </div> -->
+  <button mat-button (click)="submit()" class="btn btn-primary" [disabled]="!cartItems.length">Checkout</button>
+</div>
