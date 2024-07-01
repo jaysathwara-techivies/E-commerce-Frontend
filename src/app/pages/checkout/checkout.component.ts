@@ -107,7 +107,7 @@ cardOptions: StripeCardElementOptions = {
     }
 
 
-      submit() {
+      submit(id:any) {
     return new Promise((resolve,reject) => {
       let url = 'http://localhost:5000/api/order';
       const total = this.calculateTotal();
@@ -122,8 +122,8 @@ cardOptions: StripeCardElementOptions = {
         ),
         total: total,
         shippingAddress: this.address,
-        createdAt: new Date()
-        
+        createdAt: new Date(),
+        chargeId: id
       }
       console.log('payload: ', payload);
       
@@ -193,7 +193,7 @@ cardOptions: StripeCardElementOptions = {
           this.authService.apiCall('POST', 'http://localhost:5000/api/payment', paymentPayload).subscribe(
             (response: any) => {
               console.log('Payment successful', response);
-              this.submit();
+              this.submit(response.charge.id);
             },
             (error: any) => {
               console.log('Payment error', error);
