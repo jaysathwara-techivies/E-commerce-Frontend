@@ -22,11 +22,17 @@
               </div>
             </li>
           </ul>
-          <div class="mt-2" (click)="openDialog(order)" *ngIf="order.status !== 'canceled'">
+          <div class="mt-2" (click)="openDialog(order)" *ngIf="order.status == 'pending'">
             <button class="btn btn-danger">Cancel Order</button>
           </div>
           <div class="mt-2" *ngIf="order.status === 'canceled'">
             <p>The Order Has Been Canceled...</p>
+          </div>
+          <div class="mt-2" *ngIf="order.status === 'shipped'">
+            <p>The Order Has Been Shipped...</p>
+          </div>
+          <div class="mt-2" *ngIf="order.status === 'delivered'">
+            <p>The Order Has Been Delivered...</p>
           </div>
         </div>
       </div>
@@ -35,4 +41,27 @@
       <p class="text-center">You have no orders.</p>
     </ng-template>
   </div>
+
+  <div class="pagination-container">
+    <button class="pagination-button" (click)="onPreviousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <ng-container *ngFor="let page of totalPages">
+      <button
+        class="pagination-button"
+        [class.active]="page === currentPage"
+        [disabled]="page === currentPage"
+        (click)="onPageChange(page)"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+    <button class="pagination-button" (click)="onNextPage()" [disabled]="currentPage === totalPages.length">
+      Next
+    </button>
+    <select class="pagination-select" [(ngModel)]="limit" (change)="onLimitChange()">
+      <option *ngFor="let option of listLimit" [value]="option">{{ option }}</option>
+    </select>
+  </div>
+  
   

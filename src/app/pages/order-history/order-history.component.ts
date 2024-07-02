@@ -12,7 +12,10 @@ import { DialogpromptComponent } from 'src/app/shared/dialogprompt/dialogprompt.
 })
 export class OrderHistoryComponent implements OnInit {
 orders: any[] = [];
-
+currentPage = 1;
+totalPages:any = [];
+listLimit= [5,10,15,20];
+limit = 5;
 constructor(
   private authService: AuthenticationService,
   private dialog: MatDialog,
@@ -28,7 +31,7 @@ ngOnInit(): void {
 getOrderHistory() {
   return new Promise((resolve, reject) =>{
 
-    let url = `http://localhost:5000/api/orders/history`
+    let url = `http://localhost:5000/api/orders/history?page=${this.currentPage}&limit=${this.limit}`
     let token:any  = localStorage.getItem('credentials')
     const headers:any = new HttpHeaders({
       'Authorization': `Bearer ${JSON.parse(token).token}`,
@@ -37,7 +40,9 @@ getOrderHistory() {
     this.authService.apiCall('GET', url, null, headers).subscribe(
       async (response:any) =>{
         console.log(response);
-        this.orders = response
+        this.orders = response.orders
+        this.currentPage = response.page;
+        this.totalPages = Array.from({ length: response.totalPages }, (_, i) => i + 1);
         resolve(response)
 
       },
@@ -100,6 +105,31 @@ cancelOrder(order: any) {
       }
     )
   }).catch(e => e);
+}
+
+onPageChange(page: number): void {
+  this.currentPage = page;
+  this.getOrderHistory();
+}
+
+
+onPreviousPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.getOrderHistory();
+  }
+}
+
+onNextPage(): void {
+  if (this.currentPage < this.totalPages.length) {
+    this.currentPage++;
+    this.getOrderHistory();
+  }
+}
+
+onLimitChange() {
+  this.currentPage = 1;
+  this.getOrderHistory();
 }
 
 }
