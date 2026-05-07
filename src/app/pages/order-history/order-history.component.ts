@@ -32,7 +32,7 @@ getOrderHistory() {
   return new Promise((resolve, reject) =>{
 
     let url = `http://localhost:5000/api/orders/history?page=${this.currentPage}&limit=${this.limit}`
-    let token:any  = localStorage.getItem('credentials')
+    let token:any  = sessionStorage.getItem('credentials')
     const headers:any = new HttpHeaders({
       'Authorization': `Bearer ${JSON.parse(token).token}`,
       

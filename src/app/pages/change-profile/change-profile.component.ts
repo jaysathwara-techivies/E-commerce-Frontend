@@ -19,7 +19,7 @@ export class ChangeProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    let profile:any = localStorage.getItem('credentials')
+    let profile:any = sessionStorage.getItem('credentials')
     this.userId = JSON.parse(profile)._id
     this.name.patchValue(JSON.parse(profile).name)
   }
@@ -34,12 +34,12 @@ export class ChangeProfileComponent implements OnInit{
 
       this.authService.apiCall('POST', url, payload).subscribe(
         async (response: any) =>{
-          let profile:any = localStorage.getItem('credentials')
+          let profile:any = sessionStorage.getItem('credentials')
           if (profile) {
             profile = JSON.parse(profile)
             console.log('profile: ', profile);
             profile.name = response.name
-            localStorage.setItem('credentials', JSON.stringify(profile));
+            sessionStorage.setItem('credentials', JSON.stringify(profile));
           }
           this.utilService.openSnackBar({
             text: 'Profile Name Changed',

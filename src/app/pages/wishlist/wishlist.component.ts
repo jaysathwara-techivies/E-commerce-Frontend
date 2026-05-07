@@ -22,7 +22,7 @@ export class WishlistComponent implements OnInit {
 
   fetchWhishlist() {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
@@ -42,7 +42,7 @@ export class WishlistComponent implements OnInit {
   }
    removeFromWishlist(productId:any) {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;

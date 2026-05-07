@@ -15,7 +15,7 @@ export class UserProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    let profile:any = localStorage.getItem('credentials')
+    let profile:any = sessionStorage.getItem('credentials')
     this.isAdmin = JSON.parse(profile).role
 
   }

@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit{
     this.cartService.cartItems$.subscribe((items: string | any[]) => {
       this.cartItemCount = items.length;
       });
-      const data:any = localStorage.getItem('credentials')
+      const data:any = sessionStorage.getItem('credentials')
       this.userName = JSON.parse(data).name
   }
 

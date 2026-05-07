@@ -37,7 +37,7 @@ export class LoginComponent {
         async (response: any) => {
           if (response) {
             const userData = JSON.stringify(response);
-            localStorage.setItem('credentials',userData);
+            sessionStorage.setItem('credentials',userData);
             this.router.navigate(['/dashboard'])
           }
           resolve(response);

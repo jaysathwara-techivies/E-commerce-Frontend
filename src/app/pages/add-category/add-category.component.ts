@@ -42,6 +42,7 @@ export class AddCategoryComponent implements OnInit {
         async (response:any) =>{
           this.categories.push(response);
           await this.getCategories()
+          this.categoryForm.reset();
           this.utilService.openSnackBar({
             text: 'Category has been created...'
           })

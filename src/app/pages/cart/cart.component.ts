@@ -33,7 +33,7 @@ export class CartComponent implements OnInit{
     this.user = this.authService.currentUserValue;
   }
   async ngOnInit() {
-    let profileData:any = localStorage.getItem('credentials')
+    let profileData:any = sessionStorage.getItem('credentials')
     await this.getAddress(JSON.parse(profileData)._id)
 
     this.code.valueChanges.subscribe((value)=>{
@@ -158,7 +158,7 @@ export class CartComponent implements OnInit{
   async onChecck(event:any) {
     if (event.srcElement.checked) {
       console.log(this.address);
-      let profileData:any = localStorage.getItem('credentials')
+      let profileData:any = sessionStorage.getItem('credentials')
       this.address =   await this.getAddress(JSON.parse(profileData)._id)
     } else{
       this.address = ''

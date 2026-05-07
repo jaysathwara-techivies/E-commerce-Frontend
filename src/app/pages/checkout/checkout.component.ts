@@ -65,7 +65,7 @@ cardOptions: StripeCardElementOptions = {
     }
 
     async ngOnInit()  {
-      // let profileData:any = localStorage.getItem('credentials')
+      // let profileData:any = sessionStorage.getItem('credentials')
       // await this.getAddress(JSON.parse(profileData)._id)
     }
 
@@ -168,7 +168,7 @@ cardOptions: StripeCardElementOptions = {
   async onChecck(event:any) {
     console.log('event: ', event);
     if (event.checked) {
-      let profileData:any = localStorage.getItem('credentials')
+      let profileData:any = sessionStorage.getItem('credentials')
       await this.getAddress(JSON.parse(profileData)._id)
       this.defaultAddress.patchValue(this.address)
       console.log('this.address: ', this.address);

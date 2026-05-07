@@ -15,7 +15,7 @@ export class AuthenticationService implements CanActivate {
     private http: HttpClient,
     private router: Router
   ) { 
-    const storedCredentials:any = localStorage.getItem('credentials');
+    const storedCredentials:any = sessionStorage.getItem('credentials');
     // this.currentUserSubject = new BehaviorSubject<any>(storedCredentials ? JSON.parse(storedCredentials)._id : null);
     this.currentUser = storedCredentials ? JSON.parse(storedCredentials)._id : null;
   }
@@ -58,20 +58,23 @@ export class AuthenticationService implements CanActivate {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('credentials');
+    return !!sessionStorage.getItem('credentials');
   }
 
   logOut() {
 
-    localStorage.removeItem('credentials')
+    sessionStorage.removeItem('credentials')
   }
   public get currentUserValue(): any {
     return this.currentUser;
   }
 
   isAdminUser(): boolean {
-    let admin:any = localStorage.getItem('credentials')
-
+    let admin:any = sessionStorage.getItem('credentials')
+    if (!admin) {
+      this.router.navigate(['/login']);
+      return false;
+    }
     return JSON.parse(admin).role === 'admin';
   }
 

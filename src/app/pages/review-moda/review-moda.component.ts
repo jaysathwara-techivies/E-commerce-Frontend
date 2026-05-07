@@ -26,7 +26,7 @@ ratingOptions: any;
   }
 
   async ngOnInit() {
-    this.userId = localStorage.getItem('credentials')
+    this.userId = sessionStorage.getItem('credentials')
     this.userId = JSON.parse(this.userId)._id
     console.log('this.userId: ', this.userId);
     console.log(this.data);
@@ -63,7 +63,7 @@ ratingOptions: any;
     console.log(this.reviewFormMode);
     
     return new Promise((resolve, reject) => {
-      let user: any = localStorage.getItem('credentials');
+      let user: any = sessionStorage.getItem('credentials');
       let url = '';
       let payload = {
         ...this.reviewForm.value,

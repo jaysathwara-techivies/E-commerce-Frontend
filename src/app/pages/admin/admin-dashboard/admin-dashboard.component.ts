@@ -41,7 +41,7 @@ export class AdminDashboardComponent implements OnInit {
       let payload ={
         ...this.productForm.value
       }
-      let token:any  = localStorage.getItem('credentials')
+      let token:any  = sessionStorage.getItem('credentials')
       const headers:any = new HttpHeaders({
         'Authorization': `Bearer ${JSON.parse(token).token}`,
         

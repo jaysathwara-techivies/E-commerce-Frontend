@@ -59,13 +59,13 @@ export class DashboardComponent implements OnInit{
   addToWishlist(id:any){
     return new Promise((resolve, reject) =>{
       let url = `http://localhost:5000/wishlist`
-      let token:any  = localStorage.getItem('credentials')
+      let token:any  = sessionStorage.getItem('credentials')
       const headers:any = new HttpHeaders({
         'Authorization': `Bearer ${JSON.parse(token).token}`,
         
       });
       let payload ={
-        user: JSON.parse(localStorage.getItem('credentials') || '{}')._id,
+        user: JSON.parse(sessionStorage.getItem('credentials') || '{}')._id,
         productId : id
       }
       this.authService.apiCall('POST', url, payload, headers).subscribe(
@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit{
 
   removeFromWishlist(productId:any) {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit{
   }
   fetchWhishlist() {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;

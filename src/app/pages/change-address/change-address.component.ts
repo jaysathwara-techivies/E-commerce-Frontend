@@ -20,7 +20,7 @@ export class ChangeAddressComponent implements OnInit{
 
   }
   async ngOnInit() {
-    let profileData:any = localStorage.getItem('credentials')
+    let profileData:any = sessionStorage.getItem('credentials')
     this.userId = JSON.parse(profileData)._id
     await this.getAddress(JSON.parse(profileData)._id)
   }
