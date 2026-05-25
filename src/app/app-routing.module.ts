@@ -20,6 +20,7 @@ import { OrderPlacedComponent } from './pages/order-placed/order-placed.componen
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { AddCategoryComponent } from './pages/add-category/add-category.component';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
+import { AddProductComponent } from './pages/add-product/add-product.component';
 
 const routes: Routes = [
   {
@@ -46,11 +47,11 @@ const routes: Routes = [
   {
     path: 'products',
     component: ProductsComponent,
-    canActivate: [AuthenticationService]
+    canActivate: [AdminGuard]
   },
   {
-    path: 'admin',
-    component: AdminDashboardComponent,
+    path: 'add-product',
+    component: AddProductComponent,
     canActivate: [AdminGuard]
   },
   {
@@ -109,12 +110,24 @@ const routes: Routes = [
   },
   {
     path: 'category',
-    component: AddCategoryComponent
+    component: AddCategoryComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'add-category',
+    component: AddCategoryComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'coupon',
-    component: AddCouponComponent
+    component: AddCouponComponent,
+    canActivate: [AdminGuard]
   },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    canActivate: [AdminGuard]
+  }
 ];
 
 @NgModule({

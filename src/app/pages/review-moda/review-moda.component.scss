@@ -4,6 +4,13 @@
     overflow-y: hidden;
 }
 
+.modal-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
 .card {
     position: relative;
     max-height: 80vh; /* Set maximum height for the card */

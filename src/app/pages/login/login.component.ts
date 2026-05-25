@@ -37,8 +37,9 @@ export class LoginComponent {
         async (response: any) => {
           if (response) {
             const userData = JSON.stringify(response);
-            sessionStorage.setItem('credentials',userData);
-            this.router.navigate(['/dashboard'])
+            sessionStorage.setItem('credentials', userData);
+            const role = response.role;
+            this.router.navigate(role === 'admin' ? ['/admin-dashboard'] : ['/dashboard']);
           }
           resolve(response);
         },

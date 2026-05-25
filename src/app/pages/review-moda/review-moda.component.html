@@ -1,17 +1,18 @@
 <div class="card ">
 
     <div class="card-header">
-        <h2 class="modal-title">Review</h2>
+        <h2 class="modal-title">{{ data.adminView ? 'Customer reviews' : 'Review' }}</h2>
+        <p class="modal-subtitle" *ngIf="data.adminView && data.productName">{{ data.productName }}</p>
     </div>
-    <div class="modal-body" *ngIf="reviews.length">
+    <div class="modal-body" *ngIf="reviews?.length">
         <div *ngFor="let review of reviews">
             <div class="card-body">
                 <div class="d-flex lg">
                     <h3 class="card-title me-2">{{review.userId.name}}</h3>
-                    <button  *ngIf="review.userId._id ===  userId" class="btn btn-sm btn-danger" (click)="deleteReview(review)">
+                    <button  *ngIf="!data.adminView && review.userId._id === userId" class="btn btn-sm btn-danger" (click)="deleteReview(review)">
                         <mat-icon>delete</mat-icon>
                     </button>
-                    <button *ngIf="review.userId._id ===  userId" class="btn btn-primary ms-2" (click)="editReview(review)">
+                    <button *ngIf="!data.adminView && review.userId._id === userId" class="btn btn-primary ms-2" (click)="editReview(review)">
                         <mat-icon>edit</mat-icon>
                     </button>
 
@@ -23,10 +24,10 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!reviews.length" class="d-flex justify-content-center my-5">
-        <p>There Are No Reviews Yet:(</p>
+    <div *ngIf="!reviews?.length" class="d-flex justify-content-center my-5">
+        <p>{{ data.adminView ? 'No customer reviews yet.' : 'There Are No Reviews Yet:(' }}</p>
     </div>
-    <div class="footer lg">
+    <div class="footer lg" *ngIf="!data.adminView">
         <form [formGroup]="reviewForm">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Review Text" aria-describedby="basic-addon2" formControlName="reviewText">

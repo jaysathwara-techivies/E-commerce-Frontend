@@ -70,12 +70,15 @@ export class AuthenticationService implements CanActivate {
   }
 
   isAdminUser(): boolean {
-    let admin:any = sessionStorage.getItem('credentials')
-    if (!admin) {
-      this.router.navigate(['/login']);
+    const credentials = sessionStorage.getItem('credentials');
+    if (!credentials) {
       return false;
     }
-    return JSON.parse(admin).role === 'admin';
+    try {
+      return JSON.parse(credentials).role === 'admin';
+    } catch {
+      return false;
+    }
   }
 
 }

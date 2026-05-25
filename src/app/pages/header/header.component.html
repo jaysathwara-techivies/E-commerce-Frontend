@@ -1,34 +1,173 @@
-<div class="header d-flex justify-content-between align-items-center p-3 bg-light">
-    <button class="btn btn-outline-primary" (click)="logout()">Logout</button>
-    <div class="d-flex align-items-baseline flex-grow-1 justify-content-between">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/men">Men</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/women">Women</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/kids">Kids</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/beauty">Beauty</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="d-flex align-items-baseline">
+<div class="sidebar-wrapper" [class.collapsed]="isCollapsed">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <mat-icon>storefront</mat-icon>
+    </div>
+    <span class="brand-name">{{ brandName }}</span>
+    <button class="collapse-btn" (click)="toggleCollapse()" matRipple>
+      <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
 
-            <div class="me-4 cart-icon position-relative" (click)="cart()">
-                <mat-icon class="fs-4">shopping_cart</mat-icon>
-            <span class="cart-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ cartItemCount }}</span>
+  <nav class="sidebar-nav">
+    <!-- Admin navigation -->
+    <ng-container *ngIf="isAdmin">
+      <div class="nav-section">
+        <span class="nav-section-label">Main</span>
+        <a class="nav-item" routerLink="/admin-dashboard" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">dashboard</mat-icon>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-item" routerLink="/analytics" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">bar_chart</mat-icon>
+          <span class="nav-label">Analytics</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Catalogue</span>
+        <div class="nav-group" [class.expanded]="productsMenuOpen" [class.active-parent]="isProductsSectionActive">
+          <button type="button" class="nav-item nav-item-parent" (click)="toggleProductsMenu()" matRipple>
+            <mat-icon class="nav-icon">inventory_2</mat-icon>
+            <span class="nav-label">Products</span>
+            <mat-icon class="nav-chevron">{{ productsMenuOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+          <div class="nav-submenu" *ngIf="productsMenuOpen">
+            <a class="nav-item nav-subitem" routerLink="/products" routerLinkActive="active" matRipple>
+              <span class="nav-label">All Products</span>
+            </a>
+            <a class="nav-item nav-subitem" routerLink="/add-product" routerLinkActive="active" matRipple>
+              <span class="nav-label">Add Product</span>
+            </a>
+          </div>
         </div>
-        <div class="d-flex flex-column align-items-center">
-            <mat-icon role="button" (click)="goToProfile()">account_circle</mat-icon>
-            <span class="fw-bold">{{ userName }}</span>
+        <div class="nav-group" [class.expanded]="categoriesMenuOpen" [class.active-parent]="isCategoriesSectionActive">
+          <button type="button" class="nav-item nav-item-parent" (click)="toggleCategoriesMenu()" matRipple>
+            <mat-icon class="nav-icon">category</mat-icon>
+            <span class="nav-label">Categories</span>
+            <mat-icon class="nav-chevron">{{ categoriesMenuOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+          <div class="nav-submenu" *ngIf="categoriesMenuOpen">
+            <a class="nav-item nav-subitem" routerLink="/category" routerLinkActive="active" matRipple>
+              <span class="nav-label">All Categories</span>
+            </a>
+            <a class="nav-item nav-subitem" routerLink="/add-category" routerLinkActive="active" matRipple>
+              <span class="nav-label">Add Category</span>
+            </a>
+          </div>
         </div>
+        <a class="nav-item" routerLink="/coupon" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">local_offer</mat-icon>
+          <span class="nav-label">Coupons</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Sales</span>
+        <a class="nav-item" routerLink="/orders" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">shopping_cart</mat-icon>
+          <span class="nav-label">Orders</span>
+          <span class="nav-badge danger" *ngIf="pendingOrdersCount > 0">{{ pendingOrdersCount }}</span>
+        </a>
+        <a class="nav-item" routerLink="/returns" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">assignment_return</mat-icon>
+          <span class="nav-label">Returns</span>
+          <span class="nav-badge warning" *ngIf="pendingReturnsCount > 0">{{ pendingReturnsCount }}</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Users</span>
+        <a class="nav-item" routerLink="/customers" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">people</mat-icon>
+          <span class="nav-label">Customers</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Store</span>
+        <a class="nav-item" routerLink="/inventory" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">warehouse</mat-icon>
+          <span class="nav-label">Inventory</span>
+        </a>
+        <a class="nav-item" routerLink="/settings" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">settings</mat-icon>
+          <span class="nav-label">Settings</span>
+        </a>
+      </div>
+    </ng-container>
+
+    <!-- Customer navigation -->
+    <ng-container *ngIf="!isAdmin">
+      <div class="nav-section">
+        <span class="nav-section-label">Shop</span>
+        <a class="nav-item" routerLink="/dashboard" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">home</mat-icon>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" routerLink="/men" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">man</mat-icon>
+          <span class="nav-label">Men</span>
+        </a>
+        <a class="nav-item" routerLink="/women" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">woman</mat-icon>
+          <span class="nav-label">Women</span>
+        </a>
+        <a class="nav-item" routerLink="/kids" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">child_care</mat-icon>
+          <span class="nav-label">Kids</span>
+        </a>
+        <a class="nav-item" routerLink="/beauty" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">spa</mat-icon>
+          <span class="nav-label">Beauty</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Account</span>
+        <a class="nav-item" routerLink="/wishlist" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">favorite</mat-icon>
+          <span class="nav-label">Wishlist</span>
+        </a>
+        <a class="nav-item" routerLink="/orderhistory" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">receipt_long</mat-icon>
+          <span class="nav-label">My Orders</span>
+        </a>
+        <a class="nav-item" routerLink="/userprofile" routerLinkActive="active" matRipple>
+          <mat-icon class="nav-icon">person</mat-icon>
+          <span class="nav-label">Profile</span>
+        </a>
+      </div>
+    </ng-container>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info" (click)="goToProfile()">
+      <div class="user-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="user-meta">
+        <span class="user-name">{{ userName }}</span>
+        <span class="user-role">{{ userRole }}</span>
+      </div>
     </div>
-    </div>
+    <button class="logout-btn" (click)="logout()" matTooltip="Logout" matRipple>
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
 </div>
+
+<div class="topbar">
+  <button class="topbar-menu-btn" (click)="toggleMobileSidebar()" matRipple>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="topbar-title">{{ pageTitle }}</span>
+  <div class="topbar-actions">
+    <button class="topbar-action-btn" *ngIf="!isAdmin" (click)="cart()" matRipple>
+      <mat-icon>shopping_cart</mat-icon>
+      <span class="topbar-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+    </button>
+  </div>
+</div>
+
+<div class="mobile-overlay" [class.visible]="mobileOpen" (click)="toggleMobileSidebar()"></div>

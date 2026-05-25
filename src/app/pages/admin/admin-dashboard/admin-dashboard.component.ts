@@ -1,7 +1,14 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { MetricStatus } from '../../../shared/dashboard-metric-card/dashboard-metric-card.component';
+
+export interface DashboardMetric {
+  icon: string;
+  title: string;
+  value: string;
+  footerIcon: string;
+  footerText: string;
+  status: MetricStatus;
+}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -9,68 +16,40 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
-  productForm!:FormGroup
-  categories: any[] = [];
+  metrics: DashboardMetric[] = [
+    {
+      icon: 'currency_rupee',
+      title: 'Revenue today',
+      value: '₹48,200',
+      footerIcon: 'trending_up',
+      footerText: '+12% vs yesterday',
+      status: 'success'
+    },
+    {
+      icon: 'shopping_cart',
+      title: 'Total orders',
+      value: '134',
+      footerIcon: 'trending_up',
+      footerText: '8 new today',
+      status: 'success'
+    },
+    {
+      icon: 'groups',
+      title: 'Customers',
+      value: '2,841',
+      footerIcon: 'trending_up',
+      footerText: '+19 this week',
+      status: 'success'
+    },
+    {
+      icon: 'inventory_2',
+      title: 'Low stock alerts',
+      value: '4',
+      footerIcon: 'warning',
+      footerText: 'Action needed',
+      status: 'warning'
+    }
+  ];
 
-  constructor(
-    private fb:FormBuilder,
-    private authService: AuthenticationService
-  ){
-    this.createForm()
-  }
-
-  async ngOnInit() {
-    await this.getCategories();
-  }
-
-  createForm() {
-    this.productForm = this.fb.group({
-      name: [null,Validators.required],
-      price: [null,Validators.required],
-      description: [null,Validators.required],
-      category: [null, Validators.required],
-      stock: [null, Validators.required],
-      img: [null],
-      gender: [null]
-    })
-  }
-
-  submitProduct() {
-    return new Promise((resolve, reject) =>{
-      let url = 'http://localhost:5000/api/products'
-      let payload ={
-        ...this.productForm.value
-      }
-      let token:any  = sessionStorage.getItem('credentials')
-      const headers:any = new HttpHeaders({
-        'Authorization': `Bearer ${JSON.parse(token).token}`,
-        
-      });
-      this.authService.apiCall('POST', url, payload, headers).subscribe(
-        async (response:any) =>{
-          alert('products saved')
-          this.productForm.reset()
-          resolve(response)
-        },
-        (error)=>{
-          reject(error)
-        }
-      )
-    }).catch(e => e);
-  }
-
-  getCategories() {
-    return new Promise((resolve, reject) =>{
-      let url = 'http://localhost:5000/categories'
-      this.authService.apiCall('GET', url, null).subscribe(
-        async (response:any) =>{
-          this.categories = response
-          resolve(response)
-        },
-        (error)=>{
-          reject(error)
-        }
-      )
-    }).catch(e => e);
-  }
+  ngOnInit(): void {}
 }

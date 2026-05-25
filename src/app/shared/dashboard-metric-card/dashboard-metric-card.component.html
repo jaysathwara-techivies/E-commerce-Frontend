@@ -1,0 +1,11 @@
+<div class="metric-card" [class.metric-card--warning]="status === 'warning'">
+  <div class="metric-card__header">
+    <mat-icon class="metric-card__icon">{{ icon }}</mat-icon>
+    <span class="metric-card__title">{{ title }}</span>
+  </div>
+  <div class="metric-card__value">{{ value }}</div>
+  <div class="metric-card__footer" [ngClass]="'metric-card__footer--' + status">
+    <mat-icon class="metric-card__footer-icon">{{ footerIcon }}</mat-icon>
+    <span>{{ footerText }}</span>
+  </div>
+</div>

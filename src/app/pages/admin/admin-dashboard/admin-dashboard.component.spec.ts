@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AdminDashboardComponent } from './admin-dashboard.component';
+import { DashboardMetricCardComponent } from '../../../shared/dashboard-metric-card/dashboard-metric-card.component';
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
@@ -8,7 +10,8 @@ describe('AdminDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminDashboardComponent ]
+      declarations: [ AdminDashboardComponent, DashboardMetricCardComponent ],
+      imports: [ MatIconModule ]
     })
     .compileComponents();
 

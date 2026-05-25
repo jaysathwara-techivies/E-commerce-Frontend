@@ -1,0 +1,187 @@
+<div class="add-product-page">
+  <header class="page-header">
+    <div class="page-header__text">
+      <a class="page-back" routerLink="/products" matRipple>
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to products</span>
+      </a>
+      <h1 class="page-title">Add product</h1>
+      <p class="page-subtitle">Create a new catalogue item with pricing, inventory, and listing details.</p>
+    </div>
+    <div class="page-header__actions">
+      <button type="button" class="btn btn-secondary" routerLink="/products" [disabled]="isSubmitting">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="submitProduct()"
+        [disabled]="productForm.invalid || isSubmitting">
+        <mat-icon *ngIf="!isSubmitting">add_circle</mat-icon>
+        <span>{{ isSubmitting ? 'Saving…' : 'Publish product' }}</span>
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="productForm" class="product-form" (ngSubmit)="submitProduct()">
+    <div class="form-layout">
+      <div class="form-main">
+        <section class="form-card">
+          <div class="form-card__header">
+            <mat-icon>inventory_2</mat-icon>
+            <div>
+              <h2>Basic information</h2>
+              <p>Name and short description shown on the storefront.</p>
+            </div>
+          </div>
+          <div class="form-card__body">
+            <div class="field" [class.field--invalid]="isInvalid('name')">
+              <label for="name">Product name <span class="required">*</span></label>
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="e.g. Classic cotton crew neck tee"
+                autocomplete="off" />
+              <span class="field-error" *ngIf="isInvalid('name')">Product name is required.</span>
+            </div>
+
+            <div class="field" [class.field--invalid]="isInvalid('description')">
+              <label for="description">Description <span class="required">*</span></label>
+              <textarea
+                id="description"
+                formControlName="description"
+                rows="5"
+                placeholder="Materials, fit, care instructions, and key selling points…"></textarea>
+              <span class="field-error" *ngIf="isInvalid('description')">Description is required.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="form-card__header">
+            <mat-icon>image</mat-icon>
+            <div>
+              <h2>Product media</h2>
+              <p>Add a public image URL for the product thumbnail.</p>
+            </div>
+          </div>
+          <div class="form-card__body form-card__body--media">
+            <div class="media-fields">
+              <div class="field" [class.field--invalid]="isInvalid('img')">
+                <label for="img">Image URL</label>
+                <input
+                  id="img"
+                  type="url"
+                  formControlName="img"
+                  placeholder="https://example.com/images/product.jpg" />
+                <span class="field-hint">Use a direct link to a JPG, PNG, or WebP image.</span>
+                <span class="field-error" *ngIf="isInvalid('img')">Enter a valid image URL.</span>
+              </div>
+            </div>
+            <div class="image-preview" [class.image-preview--empty]="!imagePreview">
+              <img *ngIf="imagePreview" [src]="imagePreview" alt="Product preview" (error)="onImageError()" />
+              <div class="image-preview__placeholder" *ngIf="!imagePreview">
+                <mat-icon>hide_image</mat-icon>
+                <span>Preview appears here</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="form-sidebar">
+        <section class="form-card">
+          <div class="form-card__header">
+            <mat-icon>sell</mat-icon>
+            <div>
+              <h2>Pricing</h2>
+              <p>Set the selling price in INR.</p>
+            </div>
+          </div>
+          <div class="form-card__body">
+            <div class="field" [class.field--invalid]="isInvalid('price')">
+              <label for="price">Price (₹) <span class="required">*</span></label>
+              <div class="input-with-prefix">
+                <span class="input-prefix">₹</span>
+                <input id="price" type="number" formControlName="price" min="0" step="0.01" placeholder="0.00" />
+              </div>
+              <span class="field-error" *ngIf="isInvalid('price')">Enter a valid price greater than 0.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="form-card__header">
+            <mat-icon>warehouse</mat-icon>
+            <div>
+              <h2>Inventory</h2>
+              <p>Track units available to sell.</p>
+            </div>
+          </div>
+          <div class="form-card__body">
+            <div class="field" [class.field--invalid]="isInvalid('stock')">
+              <label for="stock">Stock quantity <span class="required">*</span></label>
+              <input id="stock" type="number" formControlName="stock" min="0" step="1" placeholder="0" />
+              <span class="field-error" *ngIf="isInvalid('stock')">Stock must be 0 or more.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <div class="form-card__header">
+            <mat-icon>category</mat-icon>
+            <div>
+              <h2>Organisation</h2>
+              <p>Category and audience for browsing.</p>
+            </div>
+          </div>
+          <div class="form-card__body">
+            <div class="field" [class.field--invalid]="isInvalid('category')">
+              <label for="category">Category <span class="required">*</span></label>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Select category</mat-label>
+                <mat-select id="category" formControlName="category">
+                  <mat-option *ngFor="let category of categories" [value]="category.name">
+                    {{ category.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="field-error" *ngIf="isInvalid('category')">Please select a category.</span>
+            </div>
+
+            <div class="field" [class.field--invalid]="isInvalid('gender')">
+              <label>Store section <span class="required">*</span></label>
+              <div class="gender-options">
+                <label
+                  class="gender-chip"
+                  *ngFor="let option of genderOptions"
+                  [class.gender-chip--selected]="productForm.get('gender')?.value === option.value">
+                  <input type="radio" formControlName="gender" [value]="option.value" />
+                  <mat-icon>{{ option.icon }}</mat-icon>
+                  <span>{{ option.label }}</span>
+                </label>
+              </div>
+              <span class="field-error" *ngIf="isInvalid('gender')">Select a store section.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card form-card--hint">
+          <mat-icon>info</mat-icon>
+          <p>
+            Required fields are marked with <span class="required">*</span>. The product goes live on the storefront
+            after you publish.
+          </p>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="form-footer">
+      <button type="button" class="btn btn-secondary" routerLink="/products" [disabled]="isSubmitting">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Saving…' : 'Publish product' }}
+      </button>
+    </footer>
+  </form>
+</div>

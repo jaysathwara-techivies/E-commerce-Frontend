@@ -48,6 +48,8 @@ ratingOptions: any;
       async (response: any) =>{
         if (response) {
           this.reviews = response
+        } else {
+          this.reviews = []
         }
         resolve(response)
       },

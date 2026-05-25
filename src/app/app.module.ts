@@ -49,6 +49,8 @@ import { AddCategoryComponent } from './pages/add-category/add-category.componen
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AddProductComponent } from './pages/add-product/add-product.component';
+import { DashboardMetricCardComponent } from './shared/dashboard-metric-card/dashboard-metric-card.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     CanceledOrdersComponent,
     ViewOrderComponent,
     AddCategoryComponent,
-    AddCouponComponent
+    AddCouponComponent,
+    AddProductComponent,
+    DashboardMetricCardComponent
   ],
   imports: [
     BrowserModule,
