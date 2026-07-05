@@ -61,11 +61,12 @@ cardOptions: StripeCardElementOptions = {
       this.subtotal = item.total
     })
     this.user = this.authService.currentUserValue;
-
+    console.log(this.user);
+    
     }
 
     async ngOnInit()  {
-      // let profileData:any = sessionStorage.getItem('credentials')
+      // let profileData:any = localStorage.getItem('credentials')
       // await this.getAddress(JSON.parse(profileData)._id)
     }
 
@@ -73,7 +74,7 @@ cardOptions: StripeCardElementOptions = {
     applyCode() {
       return new Promise((resolve,reject) =>{
   
-        let url = 'http://localhost:5000/apply-coupon'
+        let url = 'http://localhost:3000/apply-coupon'
         let payload = {
           code : this.code.value
         }
@@ -109,21 +110,22 @@ cardOptions: StripeCardElementOptions = {
 
       submit(id:any) {
     return new Promise((resolve,reject) => {
-      let url = 'http://localhost:5000/api/order';
+      let url = 'http://localhost:3000/api/order';
       const total = this.calculateTotal();
 
       let payload = {
-        user: this.user,
+        user: this.user._id,
         items: this.checkOutItems.flatMap(item => 
           item.items.map((product: any) => {
-            const { _id, quantity, price } = product;
-            return { _id, quantity, price };
+            const { _id, quantity, price,category } = product;
+            return { _id, quantity, price,category };
           })
         ),
         total: total,
-        shippingAddress: this.address,
+        shippingAddress: this.defaultAddress.value,
         createdAt: new Date(),
-        chargeId: id
+        chargeId: id,
+        userName: this.user?.userName
       }
       console.log('payload: ', payload);
       
@@ -148,7 +150,7 @@ cardOptions: StripeCardElementOptions = {
 
   getAddress(userId:any) {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/address/${userId}`
+      let url = `http://localhost:3000/address/${userId}`
       this.authService.apiCall('GET', url, null).subscribe(
         async (response:any) =>{
           console.log(response);
@@ -168,7 +170,7 @@ cardOptions: StripeCardElementOptions = {
   async onChecck(event:any) {
     console.log('event: ', event);
     if (event.checked) {
-      let profileData:any = sessionStorage.getItem('credentials')
+      let profileData:any = localStorage.getItem('credentials')
       await this.getAddress(JSON.parse(profileData)._id)
       this.defaultAddress.patchValue(this.address)
       console.log('this.address: ', this.address);
@@ -188,9 +190,9 @@ cardOptions: StripeCardElementOptions = {
           const paymentPayload = {
             token: token,
             amount: amount,
-            user: this.user
+            user: this.user._id
           };
-          this.authService.apiCall('POST', 'http://localhost:5000/api/payment', paymentPayload).subscribe(
+          this.authService.apiCall('POST', 'http://localhost:3000/api/payment', paymentPayload).subscribe(
             (response: any) => {
               console.log('Payment successful', response);
               this.submit(response.charge.id);

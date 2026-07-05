@@ -19,3 +19,247 @@
     grid-template-columns: 1fr;
   }
 }
+// ── Add this to dashboard.component.scss ──────────────────────
+
+.dashboard-bottom {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ── Rows ──────────────────────────────────────────────────────
+.db-row {
+  display: grid;
+  gap: 16px;
+
+  &--main      { grid-template-columns: 2fr 1fr; }
+  &--secondary { grid-template-columns: 1fr 1fr; }
+}
+
+.db-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ── Card ──────────────────────────────────────────────────────
+.db-card {
+  background: var(--card-bg, #1e2028);        // matches your dark card color
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 18px 20px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f1f1f3;
+    margin: 0 0 3px;
+  }
+
+  &__sub {
+    font-size: 12px;
+    color: #8b8d99;
+    margin: 0;
+  }
+}
+
+.db-btn-ghost {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: #c2c4cc;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, border-color .15s;
+
+  &:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.2);
+  }
+}
+
+// ── Table ──────────────────────────────────────────────────────
+.db-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  thead tr {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  th {
+    padding: 0 0 10px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #6b6d7a;
+    text-align: left;
+  }
+
+  td {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #d4d5db;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  .order-id {
+    font-family: monospace;
+    font-size: 12px;
+    color: #6b6d7a;
+  }
+}
+
+// ── Status pills ───────────────────────────────────────────────
+.status-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+
+  &--delivered  { background: rgba(34,197,94,.15);  color: #4ade80; }
+  &--shipped    { background: rgba(234,179,8,.15);  color: #facc15; }
+  &--processing { background: rgba(59,130,246,.15); color: #60a5fa; }
+  &--cancelled  { background: rgba(239,68,68,.15);  color: #f87171; }
+}
+
+// ── Sales bar chart ────────────────────────────────────────────
+.db-bars { display: flex; flex-direction: column; gap: 12px; }
+
+.db-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.db-bar-label {
+  width: 56px;
+  text-align: right;
+  color: #8b8d99;
+  flex-shrink: 0;
+}
+
+.db-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.db-bar-fill {
+  height: 8px;
+  border-radius: 4px;
+  background: #6366f1;
+  transition: width .4s ease;
+}
+
+.db-bar-value {
+  width: 36px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 500;
+  color: #d4d5db;
+  flex-shrink: 0;
+}
+
+// ── Low stock list ─────────────────────────────────────────────
+.db-stock-list { display: flex; flex-direction: column; }
+
+.db-stock-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 13px;
+
+  &:last-child { border-bottom: none; }
+}
+
+.db-stock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.dot--danger  { background: #ef4444; }
+  &.dot--warning { background: #f59e0b; }
+}
+
+.db-stock-name { flex: 1; color: #d4d5db; }
+
+.db-stock-qty {
+  font-size: 12px;
+  font-weight: 500;
+
+  &.qty--danger  { color: #f87171; }
+  &.qty--warning { color: #facc15; }
+}
+
+// ── Activity feed ──────────────────────────────────────────────
+.db-activity { display: flex; flex-direction: column; }
+
+.db-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+
+  &:last-child { border-bottom: none; }
+}
+
+.act-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &--success { background: rgba(34,197,94,.15);  mat-icon { color: #4ade80; } }
+  &--info    { background: rgba(59,130,246,.15); mat-icon { color: #60a5fa; } }
+  &--danger  { background: rgba(239,68,68,.15);  mat-icon { color: #f87171; } }
+}
+
+.act-body { flex: 1; }
+
+.act-text {
+  font-size: 13px;
+  color: #d4d5db;
+  margin: 0 0 3px;
+  line-height: 1.4;
+
+  strong { color: #f1f1f3; font-weight: 500; }
+}
+
+.act-time {
+  font-size: 11px;
+  color: #52545e;
+}
+
+// ── Responsive ─────────────────────────────────────────────────
+@media (max-width: 900px) {
+  .db-row--main,
+  .db-row--secondary { grid-template-columns: 1fr; }
+}

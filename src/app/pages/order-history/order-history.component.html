@@ -1,67 +1,61 @@
-<div class="container mt-5">
-    <h2>Order History</h2>
-    <div *ngIf="orders.length > 0; else noOrders">
-      <div *ngFor="let order of orders" class="card mb-3">
-        <div class="card-header">
-          <strong>Order ID:</strong> {{ order._id }} <br>
-          <strong>Date:</strong> {{ order.createdAt | date:'M/d/yy, h:mm a' }}
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Total: ₹{{ order.total }}</h5>
-          <p class="card-text"><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
-          <p class="card-text"><strong>Status:</strong> {{ order.status }}</p>
-          <h6>Items:</h6>
-          <ul class="list-group">
-            <li *ngFor="let item of order.items" class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <img [src]="item.product.img" alt="{{item.product.name}}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
-                {{ item.product.name }} (₹{{ item.price }} x {{ item.quantity }})
-              </div>
-              <div>
-                <span>₹{{ item.price * item.quantity }}</span>
-              </div>
-            </li>
-          </ul>
-          <div class="mt-2" (click)="openDialog(order)" *ngIf="order.status == 'pending'">
-            <button class="btn btn-danger">Cancel Order</button>
-          </div>
-          <div class="mt-2" *ngIf="order.status === 'canceled'">
-            <p>The Order Has Been Canceled...</p>
-          </div>
-          <div class="mt-2" *ngIf="order.status === 'shipped'">
-            <p>The Order Has Been Shipped...</p>
-          </div>
-          <div class="mt-2" *ngIf="order.status === 'delivered'">
-            <p>The Order Has Been Delivered...</p>
-          </div>
-        </div>
-      </div>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Order history</h1>
+      <p class="page-subtitle">Track and manage your past purchases</p>
     </div>
-    <ng-template #noOrders>
-      <p class="text-center">You have no orders.</p>
-    </ng-template>
+  </header>
+
+  <div class="empty-state" *ngIf="orders.length === 0">
+    <mat-icon>receipt_long</mat-icon>
+    <h2>No orders yet</h2>
+    <p>When you place an order, it will show up here.</p>
   </div>
 
-  <div class="pagination-container">
-    <button class="pagination-button" (click)="onPreviousPage()" [disabled]="currentPage === 1">
-      Previous
-    </button>
-    <ng-container *ngFor="let page of totalPages">
-      <button
-        class="pagination-button"
-        [class.active]="page === currentPage"
-        [disabled]="page === currentPage"
-        (click)="onPageChange(page)"
-      >
-        {{ page }}
-      </button>
-    </ng-container>
-    <button class="pagination-button" (click)="onNextPage()" [disabled]="currentPage === totalPages.length">
-      Next
-    </button>
-    <select class="pagination-select" [(ngModel)]="limit" (change)="onLimitChange()">
-      <option *ngFor="let option of listLimit" [value]="option">{{ option }}</option>
-    </select>
+  <div class="orders-list" *ngIf="orders.length > 0">
+    <article class="order-card" *ngFor="let order of orders">
+      <div class="order-card__header">
+        <span><strong>Order ID:</strong> {{ order._id }}</span>
+        <span><strong>Date:</strong> {{ order.createdAt | date:'medium' }}</span>
+        <span class="status-badge" [ngClass]="'status-badge--' + order.status">{{ order.status }}</span>
+      </div>
+      <div class="order-card__body">
+        <p class="order-card__total">Total: ₹{{ order.total }}</p>
+        <p class="order-card__meta"><strong>Shipping:</strong> {{ order.shippingAddress }}</p>
+        <h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 600;">Items</h3>
+        <ul class="order-items">
+          <li *ngFor="let item of order.items">
+            <div class="order-items__product">
+              <img [src]="item.product.img" [alt]="item.product.name" />
+              <span>{{ item.product.name }} (₹{{ item.price }} × {{ item.quantity }})</span>
+            </div>
+            <span>₹{{ item.price * item.quantity }}</span>
+          </li>
+        </ul>
+        <div style="margin-top: 16px" *ngIf="order.status === 'pending'">
+          <button type="button" class="ui-btn ui-btn--danger" (click)="openDialog(order)">Cancel order</button>
+        </div>
+        <p class="order-card__meta" *ngIf="order.status === 'canceled'">This order has been canceled.</p>
+        <p class="order-card__meta" *ngIf="order.status === 'shipped'">Your order is on the way.</p>
+        <p class="order-card__meta" *ngIf="order.status === 'delivered'">This order has been delivered.</p>
+      </div>
+    </article>
   </div>
-  
-  
+
+  <nav class="ui-pagination" *ngIf="orders.length > 0 && totalPages.length > 1" aria-label="Order pagination">
+    <button type="button" (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+    <button
+      type="button"
+      *ngFor="let page of totalPages"
+      [class.active]="page === currentPage"
+      [disabled]="page === currentPage"
+      (click)="onPageChange(page)"
+    >
+      {{ page }}
+    </button>
+    <button type="button" (click)="onNextPage()" [disabled]="currentPage === totalPages.length">Next</button>
+    <select [(ngModel)]="limit" (change)="onLimitChange()" aria-label="Orders per page">
+      <option *ngFor="let option of listLimit" [value]="option">{{ option }} per page</option>
+    </select>
+  </nav>
+</div>

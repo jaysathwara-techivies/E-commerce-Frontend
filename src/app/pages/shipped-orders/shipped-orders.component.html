@@ -1,24 +1,34 @@
-<table class="table">
+<div class="data-table-wrap" *ngIf="orders.length > 0; else emptyOrders">
+  <table class="data-table">
     <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Order Date</th>
-            <th>Shipping Date</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
-        </tr>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Ordered</th>
+        <th>Shipped</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let order of orders">
-            <td>{{order._id}}</td>
-            <td *ngFor="let user of order.user">{{user.name}}</td>
-            <td>{{order.createdAt | date:'dd-MM-YY'}}</td>
-            <td>{{order.orderShippedAt | date:'dd-MM-YY'}}</td>
-            <td>₹{{order.total}}</td>
-            <td >
-                <button class="btn btn-success" (click)="onClickDeliver(order)">Mark as Delivered</button>
-            </td>
-        </tr>
+      <tr *ngFor="let order of orders">
+        <td><code style="font-size: 12px">{{ order._id }}</code></td>
+        <td *ngFor="let user of order.user">{{ user.name }}</td>
+        <td>{{ order.createdAt | date:'mediumDate' }}</td>
+        <td>{{ order.orderShippedAt | date:'mediumDate' }}</td>
+        <td>₹{{ order.total }}</td>
+        <td>
+          <button type="button" class="ui-btn ui-btn--success ui-btn--sm" (click)="onClickDeliver(order)">Mark delivered</button>
+        </td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
+
+<ng-template #emptyOrders>
+  <div class="empty-state">
+    <mat-icon>local_shipping</mat-icon>
+    <h2>No shipped orders</h2>
+    <p>Orders marked as shipped will appear here.</p>
+  </div>
+</ng-template>

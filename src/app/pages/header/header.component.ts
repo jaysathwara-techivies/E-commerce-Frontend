@@ -5,6 +5,7 @@ import { filter, Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CartComponent } from '../cart/cart.component';
+import { DialogpromptComponent } from 'src/app/shared/dialogprompt/dialogprompt.component';
 
 @Component({
   selector: 'app-header',
@@ -45,13 +46,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private loadUserFromSession(): void {
-    const data = sessionStorage.getItem('credentials');
+    const data = localStorage.getItem('credentials');
     if (!data) {
       return;
     }
     try {
       const credentials = JSON.parse(data);
-      this.userName = credentials.name || 'User';
+      this.userName = credentials.userName || 'User';
       this.isAdmin = credentials.role === 'admin';
       this.userRole = this.isAdmin ? 'Administrator' : 'Customer';
       this.brandName = this.isAdmin ? 'ShopAdmin' : 'Shop';
@@ -127,9 +128,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   //   this.router.navigate(['/login'])
   // }
   cart(){
-    const dialogRef = this.dialog.open(CartComponent,{
-      panelClass: "cart-modal",
-    })
+    this.dialog.open(CartComponent, {
+      panelClass: 'cart-modal',
+      width: '440px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      restoreFocus: true,
+    });
   }
 
   // goToProfile() {
@@ -150,12 +155,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
       sidebar.classList.toggle('mobile-open', this.mobileOpen);
     }
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogpromptComponent, {
+      width: '500px',
+      data: {
+        title: 'Logout',
+        message: 'Are you sure you want to logout?'
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.logout();
+      }
+    });
+  }
  
   logout(): void {
-    this.authService.logOut();
+    const url = 'http://localhost:3000/api/user/logout';
+    this.authService.apiCall('POST', url).subscribe(
+      (response: any) => {
+            this.authService.logOut();
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
+    localStorage.removeItem('credentials')
+
     this.router.navigate(['/login']);
+      },
+      (error: any) => {
+        console.error('Logout failed:', error);
+      }
+    );
   }
 
   goToProfile(): void {

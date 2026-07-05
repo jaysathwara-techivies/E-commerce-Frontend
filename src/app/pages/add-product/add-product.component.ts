@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -79,14 +78,10 @@ export class AddProductComponent implements OnInit, OnDestroy {
     }
 
     this.isSubmitting = true;
-    const url = 'http://localhost:5000/api/products';
+    const url = 'http://localhost:3000/api/products';
     const payload = { ...this.productForm.value };
-    const token: any = sessionStorage.getItem('credentials');
-    const headers: any = new HttpHeaders({
-      Authorization: `Bearer ${JSON.parse(token).token}`
-    });
 
-    this.authService.apiCall('POST', url, payload, headers).subscribe({
+    this.authService.apiCall('POST', url, payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.snackBar.open('Product published successfully', 'View products', { duration: 4000 })
@@ -104,7 +99,8 @@ export class AddProductComponent implements OnInit, OnDestroy {
 
   getCategories(): Promise<unknown> {
     return new Promise((resolve, reject) => {
-      const url = 'http://localhost:5000/categories';
+      const url = 'http://localhost:3000/get-categories';
+      
       this.authService.apiCall('GET', url, null).subscribe({
         next: (response: any) => {
           this.categories = response;

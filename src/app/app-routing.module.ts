@@ -21,6 +21,8 @@ import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { AddCategoryComponent } from './pages/add-category/add-category.component';
 import { AddCouponComponent } from './pages/add-coupon/add-coupon.component';
 import { AddProductComponent } from './pages/add-product/add-product.component';
+import { AuthGuardGuard } from './auth-guard.guard';
+import { OrdersComponent } from './pages/admin/orders/orders.component';
 
 const routes: Routes = [
   {
@@ -56,31 +58,38 @@ const routes: Routes = [
   },
   {
     path: 'orderhistory',
-    component: OrderHistoryComponent
+    component: OrderHistoryComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path:'wishlist',
-    component: WishlistComponent
+    component: WishlistComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path:'men',
-    component: ProductCategoryComponent
+    component: ProductCategoryComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path:'women',
-    component: ProductCategoryComponent
+    component: ProductCategoryComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path:'kids',
-    component: ProductCategoryComponent
+    component: ProductCategoryComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path:'beauty',
-    component: ProductCategoryComponent
+    component: ProductCategoryComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'userprofile',
-    component: UserProfileComponent
+    component: UserProfileComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'profile',
@@ -88,19 +97,23 @@ const routes: Routes = [
   },
   {
     path: 'address',
-    component: ChangeAddressComponent
+    component: ChangeAddressComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'checkout',
-    component: CheckoutComponent
+    component: CheckoutComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'order-placed',
-    component: OrderPlacedComponent
+    component: OrderPlacedComponent,
+    canActivate: [AuthGuardGuard]
   },
   {
     path: 'admin-panel',
@@ -127,7 +140,16 @@ const routes: Routes = [
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     canActivate: [AdminGuard]
-  }
+  },
+  {
+    path: 'orders',
+    component: OrdersComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  },
 ];
 
 @NgModule({

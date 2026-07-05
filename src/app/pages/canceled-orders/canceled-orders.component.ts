@@ -24,7 +24,7 @@ export class CanceledOrdersComponent implements OnChanges, OnInit {
 
   getOrders() {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/api/order?status=canceled`
+      let url = `http://localhost:3000/api/order?status=canceled`
       this.authService.apiCall('GET', url, null).subscribe(
         async(response: any) =>{
           this.orders = response

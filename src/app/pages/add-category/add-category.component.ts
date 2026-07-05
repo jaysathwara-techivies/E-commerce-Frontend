@@ -34,7 +34,7 @@ export class AddCategoryComponent implements OnInit {
   submiForm() {
     console.log(this.categoryForm.value);
     return new Promise ((resolve,reject)=>{
-      let url = 'http://localhost:5000/categories';
+      let url = 'http://localhost:3000/categories';
       let payload = {
         ...this.categoryForm.value
       }
@@ -57,7 +57,7 @@ export class AddCategoryComponent implements OnInit {
 
   getCategories() {
     return new Promise ((resolve,reject)=>{
-      let url = 'http://localhost:5000/categories';
+      let url = 'http://localhost:3000/categories';
       this.authService.apiCall('GET',url,null).subscribe(
         async (response:any) =>{
           this.categories = response;
@@ -88,7 +88,7 @@ export class AddCategoryComponent implements OnInit {
 
   deleteCategory(id:any) {
     return new Promise ((resolve,reject)=>{
-      let url = `http://localhost:5000/categories/${id}`;
+      let url = `http://localhost:3000/categories/${id}`;
 
       this.authService.apiCall('DELETE',url,null).subscribe(
         async (response:any) =>{

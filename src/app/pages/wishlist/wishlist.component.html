@@ -1,31 +1,32 @@
-<div class="container mt-5">
-    <h1 class="mb-4">My Wishlist</h1>
-    <div class="row">
-        <ng-container *ngIf="wishlist.length > 0; else noWishlist">
-            <div class="col-md-4" *ngFor="let product of wishlist">
-                <div class="card mb-4">
-                    <div style="height: 250px; overflow: hidden;">
-                        <img [src]="product.img" class="card-img-top img-fluid" alt="{{ product.name }}">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <p class="card-text"><strong>Price:</strong> {{ product.price | currency }}</p>
-                        <div class="d-flex justify-content-between align-center">
-
-                            <a href="#" class="btn btn-primary">View Product</a>
-                            <button class="btn btn-warning" (click)="removeFromWishlist(product._id)">
-                                <mat-icon>favorite</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-        <ng-template #noWishlist>
-            <div class="col-md-12 text-center">
-                <p>No wishlist found</p>
-            </div>
-        </ng-template>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">My wishlist</h1>
+      <p class="page-subtitle">{{ wishlist.length }} saved item{{ wishlist.length === 1 ? '' : 's' }}</p>
     </div>
+  </header>
+
+  <div class="empty-state" *ngIf="wishlist.length === 0">
+    <mat-icon>favorite_border</mat-icon>
+    <h2>Your wishlist is empty</h2>
+    <p>Save products you love and find them here later.</p>
+  </div>
+
+  <div class="store-grid" *ngIf="wishlist.length > 0">
+    <article class="store-card" *ngFor="let product of wishlist">
+      <div class="store-card__media">
+        <img [src]="product.img" [alt]="product.name" />
+      </div>
+      <div class="store-card__body">
+        <h2 class="store-card__title">{{ product.name }}</h2>
+        <p class="store-card__desc">{{ product.description }}</p>
+        <p class="store-card__price">{{ product.price | currency:'INR':'symbol':'1.0-0' }}</p>
+        <div class="store-card__actions">
+          <button type="button" class="ui-btn ui-btn--danger ui-btn--icon" (click)="removeFromWishlist(product._id)" aria-label="Remove from wishlist">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
 </div>

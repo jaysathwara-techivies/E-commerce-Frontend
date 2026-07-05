@@ -1,26 +1,43 @@
-<div class="container mt-5">
-    <h1>Most Selling Product</h1>
-    <div class="d-flex justify-content-around flex-wrap">
-        <div *ngFor="let product of products; index as i">
-            <div class="card" style="width: 18rem;">
-                <img src="{{product.productDetails.img}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{product.productDetails.name}}</h5>
-                    <p class="card-text">Description: {{product.productDetails.description}}</p>
-                    <p class="card-text">Price: ₹{{product.productDetails.price}}</p>
-                    <div class="d-flex justify-content-between">
-    
-                        <button (click)="addToCart(product, i)" [disabled]="isButtonDisabled(product._id)" class="btn btn-primary">Add to Cart</button>
-                        <button class="btn btn-warning" (click)="toggleWishlist(product._id)">
-                            <mat-icon *ngIf="isProductInWishlist(product._id)">favorite</mat-icon>
-                            <mat-icon *ngIf="!isProductInWishlist(product._id)">favorite_outline</mat-icon>
-                        </button>
-                          <button class="btn btn-info" (click)="openReviewModal(product)">
-                            <mat-icon>rate_review</mat-icon>
-                          </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Most selling products</h1>
+      <p class="page-subtitle">Trending picks loved by shoppers this week</p>
     </div>
+  </header>
+
+  <div class="empty-state" *ngIf="products.length === 0">
+    <mat-icon>inventory_2</mat-icon>
+    <h2>No products yet</h2>
+    <p>Check back soon for new arrivals.</p>
+  </div>
+
+  <div class="store-grid" *ngIf="products.length > 0">
+    <article class="store-card" *ngFor="let product of products; index as i">
+      <div class="store-card__media">
+        <img [src]="product.productDetails.img" [alt]="product.productDetails.name" />
+      </div>
+      <div class="store-card__body">
+        <h2 class="store-card__title">{{ product.productDetails.name }}</h2>
+        <p class="store-card__desc">{{ product.productDetails.description }}</p>
+        <p class="store-card__price">₹{{ product.productDetails.price }}</p>
+        <div class="store-card__actions">
+          <button type="button" class="ui-btn ui-btn--primary" (click)="addToCart(product, i)">
+            Add to cart
+          </button>
+          <button
+            type="button"
+            class="ui-btn ui-btn--warning ui-btn--icon"
+            (click)="toggleWishlist(product._id)"
+            [attr.aria-label]="isProductInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'"
+          >
+            <mat-icon>{{ isProductInWishlist(product._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+          <button type="button" class="ui-btn ui-btn--ghost ui-btn--icon" (click)="openReviewModal(product)" aria-label="Reviews">
+            <mat-icon>rate_review</mat-icon>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
 </div>

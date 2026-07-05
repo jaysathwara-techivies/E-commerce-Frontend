@@ -28,7 +28,7 @@ async ngOnChanges(changes: SimpleChanges){
   
   getOrders() {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/api/order?status=shipped`
+      let url = `http://localhost:3000/api/order?status=shipped`
       this.authService.apiCall('GET', url, null).subscribe(
         async(response: any) =>{
           this.orders = response
@@ -44,7 +44,7 @@ async ngOnChanges(changes: SimpleChanges){
   onClickDeliver(order:any) {
     return new Promise((resolve, reject) =>{
   
-      let url = `http://localhost:5000/api/order/${order._id}/deliver`
+      let url = `http://localhost:3000/api/order/${order._id}/deliver`
   
       this.authService.apiCall('POST', url, null,).subscribe(
         async (response:any) =>{

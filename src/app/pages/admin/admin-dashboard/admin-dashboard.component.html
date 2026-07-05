@@ -1,13 +1,155 @@
-<section class="admin-dashboard">
-  <div class="metrics-grid">
-    <app-dashboard-metric-card
-      *ngFor="let metric of metrics"
-      [icon]="metric.icon"
-      [title]="metric.title"
-      [value]="metric.value"
-      [footerIcon]="metric.footerIcon"
-      [footerText]="metric.footerText"
-      [status]="metric.status">
-    </app-dashboard-metric-card>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Admin dashboard</h1>
+      <p class="page-subtitle">Overview of store performance at a glance</p>
+    </div>
+  </header>
+
+  <section class="admin-dashboard">
+    <div class="metrics-grid">
+      <app-dashboard-metric-card
+        *ngFor="let metric of metrics"
+        [icon]="metric.icon"
+        [title]="metric.title"
+        [value]="metric.value"
+        [footerIcon]="metric.footerIcon"
+        [footerText]="metric.footerText"
+        [status]="metric.status">
+      </app-dashboard-metric-card>
+    </div>
+    <!-- Add this INSIDE .admin-dashboard section, after the metrics-grid div -->
+
+<div class="dashboard-bottom">
+
+  <!-- Row 1: Recent Orders + Right column -->
+  <div class="db-row db-row--main">
+
+    <!-- Recent Orders Table -->
+    <div class="db-card db-orders">
+      <div class="db-card__header">
+        <div>
+          <h3 class="db-card__title">Recent orders</h3>
+          <p class="db-card__sub">Latest 5 orders across all categories</p>
+        </div>
+        <button class="db-btn-ghost" routerLink="/orders">See all ↗</button>
+      </div>
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            <th>Customer</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of recentOrders">
+            <td class="order-id">{{ order._id }}</td>
+            <td>{{ order.userName }}</td>
+            <td>{{ order.category }}</td>
+            <td>{{ order.total | currency:'INR':'symbol':'1.0-0' }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="'status-pill--' + order.status.toLowerCase()">
+                {{ order.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Right column: Sales by category + Low stock -->
+    <div class="db-col-right">
+
+      <!-- Sales by category -->
+      <div class="db-card">
+        <div class="db-card__header">
+          <h3 class="db-card__title">Sales by category</h3>
+        </div>
+        <div class="db-bars">
+          <div class="db-bar-row" *ngFor="let cat of salesByCategory">
+            <span class="db-bar-label">{{ cat.name }}</span>
+            <div class="db-bar-track">
+              <div class="db-bar-fill" [style.width.%]="cat.percent"></div>
+            </div>
+            <span class="db-bar-value">{{ cat.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Low stock -->
+      <div class="db-card">
+        <div class="db-card__header">
+          <h3 class="db-card__title">Low stock items</h3>
+          <button class="db-btn-ghost" routerLink="/inventory">Fix ↗</button>
+        </div>
+        <div class="db-stock-list">
+          <div class="db-stock-item" *ngFor="let item of lowStockItems">
+            <span class="db-stock-dot" [ngClass]="item.qty <= 2 ? 'dot--danger' : 'dot--warning'"></span>
+            <span class="db-stock-name">{{ item.name }}</span>
+            <span class="db-stock-qty" [ngClass]="item.qty <= 2 ? 'qty--danger' : 'qty--warning'">
+              {{ item.qty }} left
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</section>
+
+  <!-- Row 2: Top products + Activity feed -->
+  <div class="db-row db-row--secondary">
+
+    <!-- Top selling products -->
+    <div class="db-card">
+      <div class="db-card__header">
+        <div>
+          <h3 class="db-card__title">Top selling products</h3>
+        </div>
+        <button class="db-btn-ghost" routerLink="/products">See all ↗</button>
+      </div>
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Sold</th>
+            <th>Revenue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of topProducts">
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.sold }}</td>
+            <td>{{ product.revenue | currency:'INR':'symbol':'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="db-card">
+      <div class="db-card__header">
+        <h3 class="db-card__title">Recent activity</h3>
+      </div>
+      <div class="db-activity">
+        <div class="db-activity-item" *ngFor="let act of recentActivity">
+          <div class="act-icon" [ngClass]="'act-icon--' + act.type">
+            <mat-icon>{{ act.icon }}</mat-icon>
+          </div>
+          <div class="act-body">
+            <p class="act-text" [innerHTML]="act.text"></p>
+            <span class="act-time">{{ act.time }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+  </section>
+</div>

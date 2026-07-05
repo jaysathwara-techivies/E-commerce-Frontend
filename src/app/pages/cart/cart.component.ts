@@ -27,13 +27,22 @@ export class CartComponent implements OnInit{
     private utilService: UtilService
   ) { 
     this.cartService.cartItems$.subscribe((items: any[]) => {
-      this.cartItems = items.map(item => ({ ...item, quantity: 1 }));
+      this.cartItems = items.map(item => ({ ...item}));
     });
-
+    console.log(this.cartItems);
+    
+    this.cartItems.forEach((item:any) =>{
+      console.log(item);
+      
+      return item?.productDetails
+      ? (item.productDetails.total =
+          item.totalQuantity * (item.productDetails.price ?? item.price))
+      : (item.total = item.totalQuantity * item.price);    
+    })
     this.user = this.authService.currentUserValue;
   }
   async ngOnInit() {
-    let profileData:any = sessionStorage.getItem('credentials')
+    let profileData:any = localStorage.getItem('credentials')
     await this.getAddress(JSON.parse(profileData)._id)
 
     this.code.valueChanges.subscribe((value)=>{
@@ -51,34 +60,52 @@ export class CartComponent implements OnInit{
     this.dialogRef.close()
   }
 
-  decrementQuantity(item:any) {
-    if (item.quantity > 1) {
-      item.quantity--;
-    }
-    
-    
+  get cartCount(): number {
+    return this.cartItems.reduce((sum, item) => sum + (item.totalQuantity || 0), 0);
   }
-  incrementQuantity(item:any) {
-    if (item.quantity < item.stock) {
-      item.quantity++;
+
+  trackByItemId(_index: number, item: any): string {
+    return item._id;
+  }
+
+  getUnitPrice(item: any): number {
+    return item?.productDetails ? item.productDetails?.price ?? 0 : item?.price ?? 0;
+  }
+
+  getLineTotal(item: any): number {
+    return item.totalQuantity * this.getUnitPrice(item);
+  }
+
+  getMaxStock(item: any): number {
+    return item.stock ?? item.productDetails?.stock ?? 99;
+  }
+
+  decrementQuantity(item: any): void {
+    if (item.totalQuantity > 1) {
+      item.totalQuantity--;
+      this.persistCart();
     }
   }
 
+  incrementQuantity(item: any): void {
+    if (item.totalQuantity < this.getMaxStock(item)) {
+      item.totalQuantity++;
+      this.persistCart();
+    }
+  }
+
+  private persistCart(): void {
+    this.cartService.updateCartItems([...this.cartItems]);
+  }
+
   calculateTotal(): number {
-    const total = this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    console.log('this.discount: ', this.discount);
-    // if (this.discount) {
-    //   this.total = total
-    //   this.discountedAmount = (total * this.discount / 100)
-    //   return total - (total * this.discount / 100);
-    // }
-    return total;
+    return this.cartItems.reduce((acc, item) => acc + this.getLineTotal(item), 0);
   }
 
   // submit() {
   //   console.log(this.cartItems);
   //   return new Promise((resolve,reject) => {
-  //     let url = 'http://localhost:5000/api/order';
+  //     let url = 'http://localhost:3000/api/order';
   //     const total = this.calculateTotal();
 
   //     let payload = {
@@ -112,20 +139,22 @@ export class CartComponent implements OnInit{
   //   }).catch(e => e);
   // }
   submit() {
-          const total = this.calculateTotal();
+    const total = this.calculateTotal();
 
     let payload = {
       user: this.user,
-      items: this.cartItems.map(item => {
-        console.log('item: ', item);
-       const { _id, quantity, price, img, name } = item;
-       return { _id, quantity, price, img, name };
-   }),
+      items: this.cartItems.map(item => ({
+        _id: item._id,
+        quantity: item.totalQuantity,
+        price: this.getUnitPrice(item),
+        img: item.img ? item.img : item.productDetails?.img,
+        name: item.name ? item.name : item.productDetails?.name,
+        category: item.category ? item.category : item.productDetails?.category
+      })),
       total: total,
       shippingAddress: this.address,
-     createdAt:new Date()
-
-     }
+      createdAt: new Date()
+    }
     this.cartService.addToCheckout(payload)
     this.closeModal()
     this.router.navigate(['/checkout'])
@@ -138,7 +167,7 @@ export class CartComponent implements OnInit{
 
   getAddress(userId:any) {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/address/${userId}`
+      let url = `http://localhost:3000/address/${userId}`
       this.authService.apiCall('GET', url, null).subscribe(
         async (response:any) =>{
           console.log(response);
@@ -158,7 +187,7 @@ export class CartComponent implements OnInit{
   async onChecck(event:any) {
     if (event.srcElement.checked) {
       console.log(this.address);
-      let profileData:any = sessionStorage.getItem('credentials')
+      let profileData:any = localStorage.getItem('credentials')
       this.address =   await this.getAddress(JSON.parse(profileData)._id)
     } else{
       this.address = ''
@@ -168,7 +197,7 @@ export class CartComponent implements OnInit{
   applyCode() {
     return new Promise((resolve,reject) =>{
 
-      let url = 'http://localhost:5000/apply-coupon'
+      let url = 'http://localhost:3000/apply-coupon'
       let payload = {
         code : this.code.value
       }

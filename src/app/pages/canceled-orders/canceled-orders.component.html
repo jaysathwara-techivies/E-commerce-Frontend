@@ -1,24 +1,32 @@
-<table class="table">
+<div class="data-table-wrap" *ngIf="orders.length > 0; else emptyOrders">
+  <table class="data-table">
     <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Order Date</th>
-            <th>Canceled Date</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
-        </tr>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Ordered</th>
+        <th>Canceled</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let order of orders">
-            <td>{{order._id}}</td>
-            <td *ngFor="let user of order.user">{{user.name}}</td>
-            <td>{{order.createdAt | date:'dd-MM-YY'}}</td>
-            <td>{{order.orderCanceledAt | date:'dd-MM-YY, h:mm a'}}</td>
-            <td>₹{{order.total}}</td>
-            <td >
-                <p>This Order Has Been Canceled</p>
-            </td>
-        </tr>
+      <tr *ngFor="let order of orders">
+        <td><code style="font-size: 12px">{{ order._id }}</code></td>
+        <td *ngFor="let user of order.user">{{ user.name }}</td>
+        <td>{{ order.createdAt | date:'mediumDate' }}</td>
+        <td>{{ order.orderCanceledAt | date:'medium' }}</td>
+        <td>₹{{ order.total }}</td>
+        <td><span class="status-badge status-badge--canceled">Canceled</span></td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
+
+<ng-template #emptyOrders>
+  <div class="empty-state">
+    <mat-icon>cancel</mat-icon>
+    <h2>No canceled orders</h2>
+    <p>Canceled orders will be listed here.</p>
+  </div>
+</ng-template>

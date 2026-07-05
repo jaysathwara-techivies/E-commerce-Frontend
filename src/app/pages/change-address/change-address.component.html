@@ -1,18 +1,23 @@
-<div class="container mt-5">
-    <h1 class="mb-4">My Profile</h1>
-    <div class="card">
-        <div class="card-header">
-            <h3>Change Address</h3>
-        </div>
-        <div class="card-body">
-            <form action="">
-                <div class="form-group">
-                    <label for="name">Address</label>
-                    <textarea type="text" id="name" class="form-control" [formControl]="address"></textarea>    
-                </div>
-                <button *ngIf="isAddress.length" type="submit" class="btn btn-primary mt-2" (click)="updateAddress()">Update Address</button>
-                <button *ngIf="!isAddress.length" type="submit" class="btn btn-primary mt-2" (click)="addAddress()">Add Address</button>
-            </form>
-        </div>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Addresses</h1>
+      <p class="page-subtitle">Set your default shipping address for checkout</p>
     </div>
+  </header>
+
+  <div class="form-card">
+    <h2 class="form-card__title">Shipping address</h2>
+    <p class="form-card__subtitle">We&apos;ll use this as your default at checkout.</p>
+    <form (ngSubmit)="isAddress.length ? updateAddress() : addAddress()">
+      <mat-form-field appearance="outline" class="auth-field">
+        <mat-label>Address</mat-label>
+        <textarea matInput rows="4" [formControl]="address" placeholder="Street, city, state, PIN"></textarea>
+        <mat-icon matPrefix>location_on</mat-icon>
+      </mat-form-field>
+      <button type="submit" class="ui-btn ui-btn--primary ui-btn--block">
+        {{ isAddress.length ? 'Update address' : 'Add address' }}
+      </button>
+    </form>
+  </div>
 </div>

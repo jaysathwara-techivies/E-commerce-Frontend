@@ -11,6 +11,6 @@ export class OrderPlacedComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.router.navigate(['/dashboard']);
-    }, 5000);
+    }, 3000);
   }
 }

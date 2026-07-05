@@ -18,7 +18,7 @@
           <mat-icon class="nav-icon">dashboard</mat-icon>
           <span class="nav-label">Dashboard</span>
         </a>
-        <a class="nav-item" routerLink="/analytics" routerLinkActive="active" matRipple>
+        <a class="nav-item" href="javascript:(0)" routerLinkActive="active" matRipple>
           <mat-icon class="nav-icon">bar_chart</mat-icon>
           <span class="nav-label">Analytics</span>
         </a>
@@ -151,7 +151,7 @@
         <span class="user-role">{{ userRole }}</span>
       </div>
     </div>
-    <button class="logout-btn" (click)="logout()" matTooltip="Logout" matRipple>
+    <button class="logout-btn" (click)="openDialog()" matTooltip="Logout" matRipple>
       <mat-icon>logout</mat-icon>
     </button>
   </div>

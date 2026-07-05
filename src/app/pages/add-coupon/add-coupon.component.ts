@@ -31,7 +31,7 @@ export class AddCouponComponent {
     console.log(this.couponForm.value);
     console.log();
     return new Promise((resolve,reject)=>{
-      let url = 'http://localhost:5000/coupons';
+      let url = 'http://localhost:3000/coupons';
       let payload = {
         code: this.couponForm.value.code,
         discount: this.couponForm.value.discount,

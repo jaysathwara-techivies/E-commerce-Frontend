@@ -15,9 +15,9 @@ export class AuthenticationService implements CanActivate {
     private http: HttpClient,
     private router: Router
   ) { 
-    const storedCredentials:any = sessionStorage.getItem('credentials');
+    const storedCredentials:any = localStorage.getItem('credentials');
     // this.currentUserSubject = new BehaviorSubject<any>(storedCredentials ? JSON.parse(storedCredentials)._id : null);
-    this.currentUser = storedCredentials ? JSON.parse(storedCredentials)._id : null;
+    this.currentUser = storedCredentials ? JSON.parse(storedCredentials) : null;
   }
   
   private handleError(error: HttpErrorResponse) {
@@ -32,7 +32,8 @@ export class AuthenticationService implements CanActivate {
   }
 
   apiCall<T>(method: string, url: string, body?: any, headers?: HttpHeaders): Observable<T> {
-    const options = { headers };
+    const options = { headers,     withCredentials: true  // ← add this one line
+    };
     
     switch (method.toLowerCase()) {
       case 'get':
@@ -58,19 +59,19 @@ export class AuthenticationService implements CanActivate {
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('credentials');
+    return !!localStorage.getItem('credentials');
   }
 
   logOut() {
 
-    sessionStorage.removeItem('credentials')
+    localStorage.removeItem('credentials')
   }
   public get currentUserValue(): any {
     return this.currentUser;
   }
 
   isAdminUser(): boolean {
-    const credentials = sessionStorage.getItem('credentials');
+    const credentials = localStorage.getItem('credentials');
     if (!credentials) {
       return false;
     }

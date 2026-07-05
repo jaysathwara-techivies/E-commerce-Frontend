@@ -20,7 +20,7 @@ export class ChangeAddressComponent implements OnInit{
 
   }
   async ngOnInit() {
-    let profileData:any = sessionStorage.getItem('credentials')
+    let profileData:any = localStorage.getItem('credentials')
     this.userId = JSON.parse(profileData)._id
     await this.getAddress(JSON.parse(profileData)._id)
   }
@@ -31,7 +31,7 @@ export class ChangeAddressComponent implements OnInit{
 
   getAddress(userId:any) {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/address/${userId}`
+      let url = `http://localhost:3000/address/${userId}`
       this.authService.apiCall('GET', url, null).subscribe(
         async (response:any) =>{
           console.log(response);
@@ -53,7 +53,7 @@ export class ChangeAddressComponent implements OnInit{
 
   updateAddress() {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/address/${this.id}`
+      let url = `http://localhost:3000/address/${this.id}`
       let payload = {
         address: this.address.value
       }
@@ -77,7 +77,7 @@ export class ChangeAddressComponent implements OnInit{
 
   addAddress() {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/address`
+      let url = `http://localhost:3000/address`
       let payload = {
         user: this.userId,
         address: this.address.value

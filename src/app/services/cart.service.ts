@@ -12,14 +12,24 @@ export class CartService {
   constructor() { }
 
   addToCart(product: any): void {
-    const currentItems = this.cartItems.value;
-    this.cartItems.next([...currentItems, product]);
-    console.log(this.cartItems.value);
+    const items:any[]  = this.getCartItems();
+    const existingItem = items.find((item:any) => {      
+     return item._id === product._id})
+
+     if (existingItem) {
+      existingItem.totalQuantity += 1
+     } else {
+      items.push({
+        ...product,
+        totalQuantity: 1
+      });
+     }
+    this.cartItems.next([...items]);
   }
 
   getCartItems() {
     
-    return this.cartItems$;
+    return this.cartItems.value;
   }
 
   clearCart() {

@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -31,13 +30,8 @@ ngOnInit(): void {
 getOrderHistory() {
   return new Promise((resolve, reject) =>{
 
-    let url = `http://localhost:5000/api/orders/history?page=${this.currentPage}&limit=${this.limit}`
-    let token:any  = sessionStorage.getItem('credentials')
-    const headers:any = new HttpHeaders({
-      'Authorization': `Bearer ${JSON.parse(token).token}`,
-      
-    });
-    this.authService.apiCall('GET', url, null, headers).subscribe(
+    let url = `http://localhost:3000/api/orders/history?page=${this.currentPage}&limit=${this.limit}`
+    this.authService.apiCall('GET', url, null).subscribe(
       async (response:any) =>{
         console.log(response);
         this.orders = response.orders
@@ -82,7 +76,7 @@ cancelOrder(order: any) {
   console.log(order._id);
   return new Promise((resolve, reject) =>{
 
-    let url = `http://localhost:5000/api/order/${order._id}/cancel`
+    let url = `http://localhost:3000/api/order/${order._id}/cancel`
 
     this.authService.apiCall('POST', url, null,).subscribe(
       async (response:any) =>{

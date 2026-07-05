@@ -1,31 +1,37 @@
-<div class="container my-5">
-    <h1>
-        Add Coupons
-    </h1>
-    <form action="" [formGroup]="couponForm">
-        <div class="form-group">
-            <label for="code">Coupon Code</label>
-            <input type="text" id="code" class="form-control" placeholder="Coupon Code" formControlName="code">
-        </div>
-        <div class="form-group">
-            <label for="discount">Discount</label>
-            <input type="number" id="discount" class="form-control" placeholder="Discount" formControlName="discount">
-        </div>
-        <div class="form-group">
-            <label for="discount">Expiry Date</label>
-            <mat-form-field>
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" class="form-control" formControlName="expiryDate">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-        </div>
-        <div class="form-group">
-            <label for="limit">Usage Limit</label>
-            <input type="number" id="limit" class="form-control" placeholder="Usage Limit" formControlName="usageLimit">
-        </div>
-        <button type="submit" class="btn btn-primary mt-3" (click)="submiForm()" [disabled]="couponForm.invalid">Add Coupon</button>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Coupons</h1>
+      <p class="page-subtitle">Create discount codes for your store</p>
+    </div>
+  </header>
 
+  <div class="form-card">
+    <h2 class="form-card__title">Add coupon</h2>
+    <form [formGroup]="couponForm" (ngSubmit)="submiForm()">
+      <div class="form-stack">
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Coupon code</mat-label>
+          <input matInput type="text" formControlName="code" placeholder="SUMMER20" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Discount (%)</mat-label>
+          <input matInput type="number" formControlName="discount" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Expiry date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="expiryDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Usage limit</mat-label>
+          <input matInput type="number" formControlName="usageLimit" />
+        </mat-form-field>
+      </div>
+      <button type="submit" class="ui-btn ui-btn--primary ui-btn--block" [disabled]="couponForm.invalid" style="margin-top: 8px">
+        Add coupon
+      </button>
     </form>
+  </div>
 </div>

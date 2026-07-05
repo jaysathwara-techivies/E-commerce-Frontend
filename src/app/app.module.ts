@@ -7,8 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './pages/login/login.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './auth.interceptor';
 import { RegisterComponent } from './pages/register/register.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { TableComponent } from './pages/table/table.component';
@@ -30,6 +31,8 @@ import { ReviewModaComponent } from './pages/review-moda/review-moda.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ChangeProfileComponent } from './pages/change-profile/change-profile.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ChangeAddressComponent } from './pages/change-address/change-address.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
@@ -51,6 +54,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AddProductComponent } from './pages/add-product/add-product.component';
 import { DashboardMetricCardComponent } from './shared/dashboard-metric-card/dashboard-metric-card.component';
+import { OrdersComponent } from './pages/admin/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +90,8 @@ import { DashboardMetricCardComponent } from './shared/dashboard-metric-card/das
     AddCategoryComponent,
     AddCouponComponent,
     AddProductComponent,
-    DashboardMetricCardComponent
+    DashboardMetricCardComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +107,8 @@ import { DashboardMetricCardComponent } from './shared/dashboard-metric-card/das
     MatSidenavModule,
     MatToolbarModule,
     MatSnackBarModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatCheckboxModule,
     MatDatepickerModule,
@@ -123,7 +130,14 @@ import { DashboardMetricCardComponent } from './shared/dashboard-metric-card/das
     MatCheckboxModule,
     MatDatepickerModule
   ],
-  providers: [CartService],
+  providers: [
+    CartService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

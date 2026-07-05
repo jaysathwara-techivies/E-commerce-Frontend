@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -40,16 +39,11 @@ export class EditproductComponent implements OnInit {
   submitProduct() {
     return new Promise((resolve, reject) =>{
       let id = this.data.product._id
-      let url = `http://localhost:5000/api/products/${id}`
+      let url = `http://localhost:3000/api/products/${id}`
       let payload ={
         ...this.productForm.value
       }
-      let token:any  = sessionStorage.getItem('credentials')
-      const headers:any = new HttpHeaders({
-        'Authorization': `Bearer ${JSON.parse(token).token}`,
-        
-      });
-      this.authService.apiCall('PUT', url, payload, headers).subscribe(
+      this.authService.apiCall('PUT', url, payload).subscribe(
         async (response:any) =>{
           alert('products saved')
           this.dialogRef.close({response: response})

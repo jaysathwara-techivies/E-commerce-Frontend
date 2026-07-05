@@ -1,0 +1,613 @@
+// ─── Variables ────────────────────────────────────────────────
+$accent:       #6366f1;
+$accent-dark:  #4f46e5;
+$blue:         #185FA5;
+$amber:        #854F0B;
+$green:        #3B6D11;
+$red:          #A32D2D;
+$border:       #e5e7eb;
+$bg:           #f9fafb;
+$bg-secondary: #f3f4f6;
+$text:         #111827;
+$text-muted:   #6b7280;
+$text-light:   #9ca3af;
+$radius:       8px;
+$radius-lg:    12px;
+$transition:   0.15s ease;
+
+// ─── Page Layout ──────────────────────────────────────────────
+.orders-page {
+  padding: 0 0 2rem;
+}
+
+// ─── Header ───────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: $text;
+  margin: 0;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: $text-muted;
+  margin: 2px 0 0;
+}
+
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 8px 14px;
+  border: 1px solid $border;
+  border-radius: $radius;
+  background: #fff;
+  color: $text;
+  cursor: pointer;
+  transition: background $transition;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover { background: $bg-secondary; }
+}
+
+// ─── Stat Cards ───────────────────────────────────────────────
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: 14px 16px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: $text-muted;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: $text;
+
+  &.amber { color: $amber; }
+  &.blue  { color: $blue; }
+  &.red   { color: $red; }
+  &.green { color: $green; }
+}
+
+// ─── Toolbar ──────────────────────────────────────────────────
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+
+  select {
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 1px solid $border;
+    border-radius: $radius;
+    background: #fff;
+    color: $text;
+    cursor: pointer;
+    outline: none;
+
+    &:focus { border-color: $accent; }
+  }
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-light;
+    font-size: 18px;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px 10px 8px 34px;
+    font-size: 13px;
+    border: 1px solid $border;
+    border-radius: $radius;
+    background: #fff;
+    color: $text;
+    outline: none;
+    transition: border-color $transition;
+
+    &::placeholder { color: $text-light; }
+    &:focus { border-color: $accent; }
+  }
+}
+
+// ─── Filter Tabs ──────────────────────────────────────────────
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 20px;
+  border: 1px solid $border;
+  background: none;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all $transition;
+
+  &:hover {
+    background: $bg-secondary;
+    color: $text;
+  }
+
+  &.active {
+    background: $bg-secondary;
+    color: $text;
+    font-weight: 500;
+    border-color: #d1d5db;
+  }
+}
+
+.tab-count {
+  font-size: 11px;
+  color: $text-light;
+}
+
+// ─── Table Card ───────────────────────────────────────────────
+.table-card {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead tr {
+    background: $bg-secondary;
+  }
+
+  th {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: $text-muted;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid $border;
+    text-align: left;
+
+    &.center { text-align: center; }
+    &.right  { text-align: right; }
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background $transition;
+
+    &:hover { background: $bg; }
+
+    &.selected { background: #eff6ff; }
+
+    &:last-child td { border-bottom: none; }
+  }
+
+  td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: $text;
+    border-bottom: 1px solid $border;
+
+    &.center { text-align: center; }
+    &.right  { text-align: right; }
+    &.muted  { color: $text-muted; }
+    &.bold   { font-weight: 500; }
+  }
+}
+
+.order-id {
+  color: $blue !important;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center !important;
+  padding: 40px 14px !important;
+  color: $text-muted;
+
+  mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    display: block;
+    margin: 0 auto 8px;
+    color: $text-light;
+  }
+
+  p { font-size: 14px; }
+}
+
+// ─── Pills ────────────────────────────────────────────────────
+.pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+
+  &.pill-green { background: #dcfce7; color: $green; }
+  &.pill-amber { background: #fef3c7; color: $amber; }
+  &.pill-blue  { background: #dbeafe; color: $blue; }
+  &.pill-red   { background: #fee2e2; color: $red; }
+  &.pill-gray  { background: $bg-secondary; color: $text-muted; }
+}
+
+// ─── Icon Button ──────────────────────────────────────────────
+.icon-btn {
+  background: none;
+  border: 1px solid $border;
+  border-radius: $radius;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $text-muted;
+  transition: all $transition;
+
+  mat-icon { font-size: 17px; width: 17px; height: 17px; }
+
+  &:hover {
+    background: $bg-secondary;
+    color: $text;
+  }
+}
+
+// ─── Pagination ───────────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pag-info {
+  font-size: 13px;
+  color: $text-muted;
+}
+
+.pag-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.pag-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 13px;
+  border: 1px solid $border;
+  border-radius: $radius;
+  background: #fff;
+  color: $text;
+  cursor: pointer;
+  transition: background $transition;
+
+  mat-icon { font-size: 18px; }
+
+  &:hover:not(:disabled) { background: $bg-secondary; }
+  &.active { background: $bg-secondary; font-weight: 600; }
+  &:disabled { opacity: 0.4; cursor: default; }
+}
+
+// ─── Detail Panel ─────────────────────────────────────────────
+.detail-panel {
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid $border;
+  background: $bg-secondary;
+}
+
+.detail-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: $text;
+}
+
+.detail-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-section {
+  padding: 16px 18px;
+  border-right: 1px solid $border;
+
+  &:last-child { border-right: none; }
+}
+
+.ds-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: $text-light;
+  margin-bottom: 12px;
+}
+
+.ds-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+
+  &.total {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid $border;
+    font-weight: 500;
+  }
+}
+
+.ds-key { color: $text-muted; flex-shrink: 0; }
+.ds-val {
+  color: $text;
+  font-weight: 500;
+  text-align: right;
+
+  &.blue  { color: $blue; }
+  &.muted { color: $text-muted; font-weight: 400; }
+  &.small { font-size: 11px; }
+}
+
+.ds-divider {
+  height: 1px;
+  background: $border;
+  margin: 10px 0;
+}
+
+.address-block {
+  font-size: 13px;
+  color: $text;
+  line-height: 1.7;
+
+  .muted  { color: $text-muted; }
+  .small  { font-size: 11px; }
+}
+
+// ─── Timeline ─────────────────────────────────────────────────
+.timeline-section {
+  padding: 16px 18px;
+  border-top: 1px solid $border;
+}
+
+.timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+  margin-top: 8px;
+}
+
+.tl-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  &:not(:last-child) {
+    .tl-connector {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: $border;
+      z-index: 0;
+
+      &.done { background: #4ade80; }
+    }
+  }
+}
+
+.tl-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid $border;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+
+  mat-icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+  }
+
+  .tl-step.done & {
+    background: #dcfce7;
+    border-color: #4ade80;
+    mat-icon { color: $green; }
+  }
+
+  .tl-step.active & {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    mat-icon { color: $blue; }
+  }
+}
+
+.tl-name {
+  font-size: 11px;
+  color: $text-muted;
+  margin-top: 6px;
+  text-align: center;
+
+  .tl-step.done &, .tl-step.active & { color: $text; font-weight: 500; }
+}
+
+.tl-time {
+  font-size: 10px;
+  color: $text-light;
+  margin-top: 2px;
+  text-align: center;
+}
+
+// ─── Detail Actions ───────────────────────────────────────────
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-top: 1px solid $border;
+  flex-wrap: wrap;
+}
+
+.action-label {
+  font-size: 13px;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+.status-select {
+  padding: 7px 10px;
+  font-size: 13px;
+  border: 1px solid $border;
+  border-radius: $radius;
+  background: #fff;
+  color: $text;
+  outline: none;
+  cursor: pointer;
+
+  &:focus { border-color: $accent; }
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  background: $accent;
+  color: #fff;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background $transition;
+
+  &:hover { background: $accent-dark; }
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  font-size: 13px;
+  background: none;
+  border: 1px solid $border;
+  border-radius: $radius;
+  color: $text;
+  cursor: pointer;
+  transition: background $transition;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover { background: $bg-secondary; }
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  font-size: 13px;
+  background: none;
+  border: 1px solid #fca5a5;
+  border-radius: $radius;
+  color: $red;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background $transition;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover { background: #fee2e2; }
+  &:disabled { opacity: 0.4; cursor: default; }
+}
+
+// ─── Responsive ───────────────────────────────────────────────
+@media (max-width: 900px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .detail-body { grid-template-columns: 1fr; }
+  .detail-section { border-right: none; border-bottom: 1px solid $border; }
+  table { font-size: 12px; }
+  th, td { padding: 8px 10px; }
+}

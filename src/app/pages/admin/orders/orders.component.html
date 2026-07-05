@@ -1,0 +1,264 @@
+<div class="orders-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Orders</h1>
+        <p class="page-sub">Manage and track all customer orders</p>
+      </div>
+      <button class="btn-export" (click)="exportCSV()">
+        <mat-icon>download</mat-icon> Export CSV
+      </button>
+    </div>
+  
+    <!-- Stat Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total orders</div>
+        <div class="stat-value">{{ stats.total }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending / Processing</div>
+        <div class="stat-value amber">{{ stats.pending }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Shipped today</div>
+        <div class="stat-value blue">{{ stats.shippedToday }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Cancelled (month)</div>
+        <div class="stat-value red">{{ stats.cancelled }}</div>
+      </div>
+    </div>
+  
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search by order ID or customer name…"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+        />
+      </div>
+      <select [(ngModel)]="filterCategory" (change)="applyFilters()">
+        <option value="">All categories</option>
+        <option value="Men">Men</option>
+        <option value="Women">Women</option>
+        <option value="Kids">Kids</option>
+        <option value="Beauty">Beauty</option>
+      </select>
+      <select [(ngModel)]="filterPayment" (change)="applyFilters()">
+        <option value="">All payment</option>
+        <option value="Razorpay">Razorpay</option>
+        <option value="COD">COD</option>
+        <option value="UPI">UPI</option>
+      </select>
+      <select [(ngModel)]="sortBy" (change)="applyFilters()">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="asc">Amount ↑</option>
+        <option value="desc">Amount ↓</option>
+      </select>
+    </div>
+  
+    <!-- Status Tabs -->
+    <div class="filter-tabs">
+      <button
+        *ngFor="let tab of tabs"
+        class="tab-btn"
+        [class.active]="activeTab === tab.value"
+        (click)="setTab(tab.value)"
+      >
+        {{ tab.label }}
+        <span class="tab-count">{{ tab.count }}</span>
+      </button>
+    </div>
+  
+    <!-- Orders Table -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th class="center">Items</th>
+            <th class="right">Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th class="center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="filteredOrders.length > 0; else noOrders">
+            <tr
+              *ngFor="let order of paginatedOrders"
+              [class.selected]="selectedOrder?.id === order.id"
+              (click)="selectOrder(order)"
+            >
+              <td class="order-id">#{{ order.id }}</td>
+              <td>{{ order.customerName }}</td>
+              <td class="muted">{{ order.date }}</td>
+              <td class="center">{{ order.items.length }}</td>
+              <td class="right bold">₹{{ order.amount | number }}</td>
+              <td><span class="pill" [ngClass]="getPaymentClass(order.payment)">{{ order.payment }}</span></td>
+              <td><span class="pill" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span></td>
+              <td class="center">
+                <button class="icon-btn" (click)="selectOrder(order); $event.stopPropagation()" matTooltip="View order">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #noOrders>
+            <tr>
+              <td colspan="8" class="empty-state">
+                <mat-icon>inbox</mat-icon>
+                <p>No orders found</p>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="filteredOrders.length > 0">
+      <span class="pag-info">
+        Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ min(currentPage * pageSize, filteredOrders.length) }}
+        of {{ filteredOrders.length }} orders
+      </span>
+      <div class="pag-btns">
+        <button class="pag-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button
+          *ngFor="let p of pageNumbers"
+          class="pag-btn"
+          [class.active]="p === currentPage"
+          (click)="changePage(p)"
+        >{{ p }}</button>
+        <button class="pag-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Order Detail Panel -->
+    <div class="detail-panel" *ngIf="selectedOrder" [@slideIn]>
+  
+      <div class="detail-header">
+        <div class="detail-title">Order #{{ selectedOrder.id }} — {{ selectedOrder.customerName }}</div>
+        <div class="detail-header-right">
+          <span class="pill" [ngClass]="getStatusClass(selectedOrder.status)">{{ selectedOrder.status }}</span>
+          <button class="icon-btn" (click)="closeDetail()"><mat-icon>close</mat-icon></button>
+        </div>
+      </div>
+  
+      <div class="detail-body">
+  
+        <!-- Order Info -->
+        <div class="detail-section">
+          <div class="ds-label">Order info</div>
+          <div class="ds-row" *ngFor="let item of selectedOrder.items">
+            <span class="ds-key">{{ item.name }}</span>
+            <span class="ds-val">× {{ item.qty }} — ₹{{ item.price | number }}</span>
+          </div>
+          <div class="ds-divider"></div>
+          <div class="ds-row">
+            <span class="ds-key">Subtotal</span>
+            <span class="ds-val">₹{{ selectedOrder.subtotal | number }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-key">Shipping</span>
+            <span class="ds-val">₹{{ selectedOrder.shipping }}</span>
+          </div>
+          <div class="ds-row total">
+            <span class="ds-key">Total</span>
+            <span class="ds-val blue">₹{{ selectedOrder.amount | number }}</span>
+          </div>
+        </div>
+  
+        <!-- Customer & Payment -->
+        <div class="detail-section">
+          <div class="ds-label">Customer &amp; payment</div>
+          <div class="ds-row">
+            <span class="ds-key">Name</span>
+            <span class="ds-val">{{ selectedOrder.customerName }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-key">Phone</span>
+            <span class="ds-val">{{ selectedOrder.phone }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-key">Email</span>
+            <span class="ds-val">{{ selectedOrder.email }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-key">Payment</span>
+            <span class="ds-val">{{ selectedOrder.payment }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-key">Txn ID</span>
+            <span class="ds-val muted small">{{ selectedOrder.txnId }}</span>
+          </div>
+        </div>
+  
+        <!-- Shipping Address -->
+        <div class="detail-section">
+          <div class="ds-label">Shipping address</div>
+          <div class="address-block">
+            <p>{{ selectedOrder.address.name }}</p>
+            <p>{{ selectedOrder.address.line1 }}</p>
+            <p>{{ selectedOrder.address.line2 }}</p>
+            <p>{{ selectedOrder.address.city }}, {{ selectedOrder.address.state }}</p>
+            <p>{{ selectedOrder.address.pincode }}</p>
+            <p class="muted small" *ngIf="selectedOrder.awb">
+              Courier: {{ selectedOrder.courier }} · AWB #{{ selectedOrder.awb }}
+            </p>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Timeline -->
+      <div class="timeline-section">
+        <div class="ds-label">Order timeline</div>
+        <div class="timeline">
+          <div
+            class="tl-step"
+            *ngFor="let step of getTimeline(selectedOrder.status); let last = last"
+            [class.done]="step.done"
+            [class.active]="step.active"
+          >
+            <div class="tl-connector" *ngIf="!last" [class.done]="step.done"></div>
+            <div class="tl-dot">
+              <mat-icon *ngIf="step.done">check</mat-icon>
+              <mat-icon *ngIf="step.active && !step.done">radio_button_checked</mat-icon>
+            </div>
+            <div class="tl-name">{{ step.label }}</div>
+            <div class="tl-time" *ngIf="step.time">{{ step.time }}</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Actions -->
+      <div class="detail-actions">
+        <label class="action-label">Update status:</label>
+        <select [(ngModel)]="newStatus" class="status-select">
+          <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+        </select>
+        <button class="btn-primary" (click)="updateStatus()">Save status</button>
+        <button class="btn-outline" (click)="printInvoice()">
+          <mat-icon>print</mat-icon> Print invoice
+        </button>
+        <button class="btn-danger" (click)="cancelOrder(selectedOrder)" [disabled]="selectedOrder.status === 'Cancelled'">
+          <mat-icon>cancel</mat-icon> Cancel order
+        </button>
+      </div>
+  
+    </div>
+  
+  </div>

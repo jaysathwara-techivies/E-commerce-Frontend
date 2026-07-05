@@ -1,0 +1,1108 @@
+// Design tokens
+$accent: #6366f1;
+$accent-hover: #4f46e5;
+$accent-soft: rgba(99, 102, 241, 0.12);
+$border: #e5e7eb;
+$text: #111827;
+$text-muted: #6b7280;
+$text-subtle: #9ca3af;
+$surface: #f9fafb;
+$card-bg: #ffffff;
+$danger: #ef4444;
+$danger-soft: #fef2f2;
+$danger-text: #b91c1c;
+$success: #10b981;
+$success-soft: #ecfdf5;
+$warning: #f59e0b;
+$warning-soft: #fffbeb;
+$radius: 12px;
+$shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+
+// ─── Page shell ───────────────────────────────────────────────
+.page-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: $text;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: $text-muted;
+}
+
+.page-header__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+// ─── Buttons ──────────────────────────────────────────────────
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: $accent;
+    color: #fff;
+    &:hover:not(:disabled) { background: $accent-hover; }
+  }
+
+  &--ghost {
+    background: $surface;
+    color: $text;
+    border: 1px solid $border;
+    &:hover:not(:disabled) { background: #fff; border-color: $accent; color: $accent; }
+  }
+
+  &--danger {
+    background: $danger-soft;
+    color: $danger-text;
+    border: 1px solid #fecaca;
+    &:hover:not(:disabled) { background: #fee2e2; }
+  }
+
+  &--success {
+    background: $success-soft;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+    &:hover:not(:disabled) { background: #d1fae5; }
+  }
+
+  &--warning {
+    background: $warning-soft;
+    color: #b45309;
+    border: 1px solid #fde68a;
+    &:hover:not(:disabled) { background: #fef3c7; }
+  }
+
+  &--icon {
+    padding: 8px;
+    min-width: 40px;
+  }
+
+  &--sm {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  &--block {
+    width: 100%;
+  }
+}
+
+// ─── Toolbar & filters ────────────────────────────────────────
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: 10px;
+  padding: 0 12px;
+  box-shadow: $shadow;
+
+  mat-icon {
+    color: $text-subtle;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 0;
+    font-size: 14px;
+    background: transparent;
+    color: $text;
+  }
+}
+
+.ui-select {
+  padding: 10px 12px;
+  border: 1px solid $border;
+  border-radius: 10px;
+  font-size: 14px;
+  color: $text;
+  background: $card-bg;
+  min-width: 140px;
+  cursor: pointer;
+  box-shadow: $shadow;
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+    box-shadow: 0 0 0 3px $accent-soft;
+  }
+}
+
+// ─── Store product grid (customer) ───────────────────────────
+.store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.store-card {
+  display: flex;
+  flex-direction: column;
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: $shadow;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  &__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: $surface;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+    gap: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: $text;
+    line-height: 1.3;
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: 13px;
+    color: $text-muted;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__price {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: $accent;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  &__out-of-stock {
+    font-size: 13px;
+    font-weight: 600;
+    color: $danger;
+  }
+}
+
+// ─── Form card ────────────────────────────────────────────────
+.form-card {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 28px;
+  box-shadow: $shadow;
+  max-width: 560px;
+
+  &--wide {
+    max-width: none;
+  }
+
+  &__title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: $text;
+  }
+
+  &__subtitle {
+    margin: 0 0 24px;
+    font-size: 14px;
+    color: $text-muted;
+  }
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// ─── Settings / account ───────────────────────────────────────
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.settings-card {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: $shadow;
+
+  &__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid $border;
+    background: $surface;
+
+    h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: $text;
+    }
+  }
+
+  &__body {
+    padding: 4px 0;
+  }
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  color: $text;
+  font-size: 15px;
+
+  &:hover {
+    background: $accent-soft;
+  }
+
+  h5 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  mat-icon {
+    color: $text-subtle;
+  }
+}
+
+// ─── Data table (admin) ───────────────────────────────────────
+.data-table-wrap {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: $shadow;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th,
+  td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid $border;
+  }
+
+  th {
+    background: $surface;
+    font-weight: 600;
+    color: $text-muted;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover td {
+    background: rgba(99, 102, 241, 0.03);
+  }
+
+  .table-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+// ─── Status badges ──────────────────────────────────────────────
+.status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+
+  &--pending { background: $warning-soft; color: #b45309; }
+  &--shipped { background: #eff6ff; color: #1d4ed8; }
+  &--delivered { background: $success-soft; color: #047857; }
+  &--canceled { background: $danger-soft; color: $danger-text; }
+}
+
+// ─── Order cards ────────────────────────────────────────────────
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: $shadow;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding: 16px 20px;
+    background: $surface;
+    border-bottom: 1px solid $border;
+    font-size: 13px;
+    color: $text-muted;
+
+    strong {
+      color: $text;
+      font-weight: 600;
+    }
+  }
+
+  &__body {
+    padding: 20px;
+  }
+
+  &__total {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: $text;
+  }
+
+  &__meta {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: $text-muted;
+    line-height: 1.5;
+  }
+}
+
+.order-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid $border;
+  border-radius: 10px;
+  overflow: hidden;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid $border;
+    font-size: 14px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__product {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ─── Checkout ───────────────────────────────────────────────────
+.checkout-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkout-panel {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 24px;
+  box-shadow: $shadow;
+
+  h2, h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: $text;
+  }
+
+  .checkout-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    color: $text-muted;
+
+    &--total {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid $border;
+      font-size: 16px;
+      font-weight: 700;
+      color: $text;
+    }
+  }
+
+  .checkout-product {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid $border;
+
+    img {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    &__info {
+      flex: 1;
+      min-width: 0;
+
+      h6 {
+        margin: 0 0 4px;
+        font-size: 14px;
+        font-weight: 600;
+        color: $text;
+      }
+    }
+  }
+
+  .coupon-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+
+    input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid $border;
+      border-radius: 10px;
+      font-size: 14px;
+
+      &:focus {
+        outline: none;
+        border-color: $accent;
+      }
+    }
+  }
+}
+
+// ─── Tabs ───────────────────────────────────────────────────────
+.page-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  margin-bottom: 24px;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+
+  button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-muted;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    &.active,
+    &:hover {
+      background: $card-bg;
+      color: $accent;
+      box-shadow: $shadow;
+    }
+  }
+}
+
+.tab-panel {
+  display: none;
+  &.show {
+    display: block;
+  }
+}
+
+// ─── Pagination ─────────────────────────────────────────────────
+.ui-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+  padding-bottom: 16px;
+
+  button,
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid $border;
+    border-radius: 10px;
+    background: $card-bg;
+    color: $text;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+
+    &:hover:not(:disabled):not(.active) {
+      border-color: $accent;
+      color: $accent;
+    }
+
+    &.active {
+      background: $accent;
+      border-color: $accent;
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  select {
+    padding: 8px 12px;
+    border: 1px solid $border;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-left: 8px;
+  }
+}
+
+// ─── Empty state ────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: $text-muted;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $text-subtle;
+    margin-bottom: 12px;
+  }
+
+  h2, h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    color: $text;
+  }
+
+  p {
+    margin: 0 0 16px;
+    font-size: 14px;
+  }
+}
+
+// ─── Success / order placed ─────────────────────────────────────
+.success-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 32px;
+
+  &__card {
+    text-align: center;
+    max-width: 420px;
+    padding: 48px 32px;
+    background: $card-bg;
+    border: 1px solid $border;
+    border-radius: 16px;
+    box-shadow: $shadow;
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: $text;
+  }
+
+  p {
+    margin: 0 0 24px;
+    color: $text-muted;
+    font-size: 15px;
+  }
+}
+
+// ─── Modal panel ────────────────────────────────────────────────
+.modal-panel {
+  background: $card-bg;
+  border-radius: $radius;
+  overflow: hidden;
+
+  &__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid $border;
+    background: $surface;
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: $text;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: $text-muted;
+    }
+  }
+
+  &__body {
+    padding: 16px 24px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    padding: 16px 24px;
+    border-top: 1px solid $border;
+  }
+}
+
+.review-item {
+  padding: 16px 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+
+    h3 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: $text;
+    }
+  }
+
+  &__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: $warning;
+    font-weight: 600;
+  }
+
+  &__text {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: $text-muted;
+    line-height: 1.5;
+  }
+
+  &__date {
+    font-size: 12px;
+    color: $text-subtle;
+  }
+}
+
+.review-form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  input, select {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 12px;
+    border: 1px solid $border;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+}
+
+// ─── Auth layout ────────────────────────────────────────────────
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.auth-brand {
+  position: relative;
+  display: none;
+  flex: 1;
+  max-width: 520px;
+  padding: 48px;
+  background: linear-gradient(145deg, #312e81 0%, #4f46e5 45%, #6366f1 100%);
+  color: #fff;
+  overflow: hidden;
+
+  @media (min-width: 900px) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.auth-brand__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+}
+
+.auth-brand__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.auth-brand__title {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.auth-brand__subtitle {
+  margin: 0 0 32px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.auth-brand__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    opacity: 0.9;
+  }
+}
+
+.auth-brand__pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  background: $surface;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 16px;
+  box-shadow: $shadow;
+}
+
+.auth-card__header {
+  margin-bottom: 28px;
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    color: $text;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: $text-muted;
+  }
+}
+
+.auth-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border-radius: $radius;
+  font-size: 14px;
+  line-height: 1.45;
+
+  mat-icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &--error {
+    background: $danger-soft;
+    color: $danger-text;
+    border: 1px solid #fecaca;
+  }
+
+  &--success {
+    background: $success-soft;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+  }
+}
+
+.auth-field {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.auth-toggle-password {
+  color: $text-muted !important;
+}
+
+.auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0 24px;
+}
+
+.auth-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  color: $accent;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $accent-hover;
+    text-decoration: underline;
+  }
+
+  &--bold {
+    font-weight: 600;
+  }
+}
+
+.auth-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: $radius;
+  background: $accent;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $accent-hover;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.auth-card__footer {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid $border;
+  text-align: center;
+  font-size: 14px;
+  color: $text-muted;
+
+  .auth-link {
+    margin-left: 6px;
+  }
+}
+
+.order-modal .mat-dialog-container {
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}

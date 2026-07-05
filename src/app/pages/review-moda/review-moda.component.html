@@ -1,46 +1,57 @@
-<div class="card ">
+<div class="modal-panel">
+  <header class="modal-panel__header">
+    <h2>{{ data.adminView ? 'Customer reviews' : 'Write a review' }}</h2>
+    <p *ngIf="data.adminView && data.productName">{{ data.productName }}</p>
+  </header>
 
-    <div class="card-header">
-        <h2 class="modal-title">{{ data.adminView ? 'Customer reviews' : 'Review' }}</h2>
-        <p class="modal-subtitle" *ngIf="data.adminView && data.productName">{{ data.productName }}</p>
-    </div>
-    <div class="modal-body" *ngIf="reviews?.length">
-        <div *ngFor="let review of reviews">
-            <div class="card-body">
-                <div class="d-flex lg">
-                    <h3 class="card-title me-2">{{review.userId.name}}</h3>
-                    <button  *ngIf="!data.adminView && review.userId._id === userId" class="btn btn-sm btn-danger" (click)="deleteReview(review)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button *ngIf="!data.adminView && review.userId._id === userId" class="btn btn-primary ms-2" (click)="editReview(review)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
+  <div class="modal-panel__body" *ngIf="reviews?.length; else noReviews">
+    <article class="review-item" *ngFor="let review of reviews">
+      <div class="review-item__header">
+        <h3>{{ review.userId.name }}</h3>
+        <button
+          *ngIf="!data.adminView && review.userId._id === userId"
+          type="button"
+          class="ui-btn ui-btn--danger ui-btn--icon ui-btn--sm"
+          (click)="deleteReview(review)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          *ngIf="!data.adminView && review.userId._id === userId"
+          type="button"
+          class="ui-btn ui-btn--ghost ui-btn--icon ui-btn--sm"
+          (click)="editReview(review)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <p class="review-item__rating">{{ review.rating }} / 5</p>
+      <p class="review-item__text">{{ review.reviewText }}</p>
+      <span class="review-item__date">{{ review.createdAt | date:'medium' }}</span>
+    </article>
+  </div>
 
-                </div>
-                <p class="card-text">{{review.reviewText}}</p>
-                <p class="card-text">{{review.rating}}/5</p>
-                <strong>Date:</strong> {{ review.createdAt | date:'M/d/yy, h:mm a' }}
+  <ng-template #noReviews>
+    <div class="empty-state" style="padding: 32px">
+      <mat-icon>rate_review</mat-icon>
+      <p>{{ data.adminView ? 'No customer reviews yet.' : 'Be the first to review this product.' }}</p>
+    </div>
+  </ng-template>
 
-            </div>
-        </div>
-    </div>
-    <div *ngIf="!reviews?.length" class="d-flex justify-content-center my-5">
-        <p>{{ data.adminView ? 'No customer reviews yet.' : 'There Are No Reviews Yet:(' }}</p>
-    </div>
-    <div class="footer lg" *ngIf="!data.adminView">
-        <form [formGroup]="reviewForm">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Review Text" aria-describedby="basic-addon2" formControlName="reviewText">
-                <select class="form-select" id="inputGroupSelect01" formControlName="rating">
-                    <option selected>Choose...</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                <button class="btn btn-lg btn-primary" (click)="submit()"[disabled]="reviewForm.invalid">Submit</button>
-            </div>
-        </form>
-    </div>
+  <footer class="modal-panel__footer" *ngIf="!data.adminView">
+    <form [formGroup]="reviewForm" (ngSubmit)="submit()">
+      <div class="review-form-row">
+        <input type="text" formControlName="reviewText" placeholder="Share your experience…" />
+        <select formControlName="rating">
+          <option value="" disabled selected>Rating</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        <button type="submit" class="ui-btn ui-btn--primary" [disabled]="reviewForm.invalid">Submit</button>
+      </div>
+    </form>
+  </footer>
 </div>

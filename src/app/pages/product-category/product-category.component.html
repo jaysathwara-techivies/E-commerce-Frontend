@@ -1,49 +1,71 @@
-<div class="container">
-    <div class="d-flex justify-content-between my-3">
-        <input type="text" class="form-control w-25" placeholder="Search Products" [(ngModel)]="searchQuery">
-        <select class="form-control w-25" [(ngModel)]="selectedCategory">
-            <option value="">All Categories</option>
-            <option *ngFor="let category of categories" [value]="category.name">{{category.name}}</option>
-        </select>
-        <select class="form-control w-25" [(ngModel)]="sortOption">
-            <option value="name">Name</option>
-            <option value="price">Price</option>
-        </select>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">{{ pageTitle }}</h1>
+      <p class="page-subtitle">Browse and shop our curated collection</p>
     </div>
+  </header>
 
-    <div class="d-flex justify-content-around flex-wrap">
-        <div *ngFor="let product of paginatedProducts()" class="card mt-3" style="width: 18rem;">
-            <img [src]="product.img" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{product.name}}</h5>
-                <p class="card-text">Description: {{product.description}}</p>
-                <p class="card-text">Price: ₹{{product.price}}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <button *ngIf="product.stock > 0" (click)="addToCart(product)" [disabled]="isButtonDisabled(product._id)" class="btn btn-primary">Add to Cart</button>
-                    <p *ngIf="product.stock <= 0">Out Of Stock!</p>
-                    <button class="btn btn-warning" (click)="toggleWishlist(product._id)">
-                        <mat-icon *ngIf="isProductInWishlist(product._id)">favorite</mat-icon>
-                        <mat-icon *ngIf="!isProductInWishlist(product._id)">favorite_outline</mat-icon>
-                    </button>
-                    <button class="btn btn-info" (click)="openReviewModal(product)">
-                        <mat-icon>rate_review</mat-icon>
-                    </button>
-                </div>
-            </div>
+  <div class="page-toolbar">
+    <div class="search-field">
+      <mat-icon>search</mat-icon>
+      <input type="search" [(ngModel)]="searchQuery" placeholder="Search products…" aria-label="Search products" />
+    </div>
+    <select class="ui-select" [(ngModel)]="selectedCategory" aria-label="Filter by category">
+      <option value="">All categories</option>
+      <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+    </select>
+    <select class="ui-select" [(ngModel)]="sortOption" aria-label="Sort products">
+      <option value="name">Sort by name</option>
+      <option value="price">Sort by price</option>
+    </select>
+  </div>
+
+  <div class="store-grid">
+    <article class="store-card" *ngFor="let product of paginatedProducts()">
+      <div class="store-card__media">
+        <img [src]="product.img" [alt]="product.name" />
+      </div>
+      <div class="store-card__body">
+        <h2 class="store-card__title">{{ product.name }}</h2>
+        <p class="store-card__desc">{{ product.description }}</p>
+        <p class="store-card__price">₹{{ product.price }}</p>
+        <div class="store-card__actions">
+          <button
+            *ngIf="product.stock > 0"
+            type="button"
+            class="ui-btn ui-btn--primary"
+            (click)="addToCart(product)"
+            [disabled]="isButtonDisabled(product._id)"
+          >
+            Add to cart
+          </button>
+          <span class="store-card__out-of-stock" *ngIf="product.stock <= 0">Out of stock</span>
+          <button
+            type="button"
+            class="ui-btn ui-btn--warning ui-btn--icon"
+            (click)="toggleWishlist(product._id)"
+          >
+            <mat-icon>{{ isProductInWishlist(product._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+          <button type="button" class="ui-btn ui-btn--ghost ui-btn--icon" (click)="openReviewModal(product)">
+            <mat-icon>rate_review</mat-icon>
+          </button>
         </div>
-    </div>
+      </div>
+    </article>
+  </div>
 
-    <nav aria-label="Page navigation example" class="pb-3 pt-3">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" role="button" (click)="changePage(currentPage - 1)" tabindex="-1">Previous</a>
-            </li>
-            <li *ngFor="let page of [].constructor(totalPages()); let i = index" class="page-item" [class.active]="currentPage === (i + 1)">
-                <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
-            </li>
-            <li class="page-item" [class.disabled]="currentPage === totalPages()">
-                <a class="page-link" role="button" (click)="changePage(currentPage + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
+  <nav class="ui-pagination" aria-label="Product pagination" *ngIf="totalPages() > 1">
+    <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+    <button
+      type="button"
+      *ngFor="let page of [].constructor(totalPages()); let i = index"
+      [class.active]="currentPage === i + 1"
+      (click)="changePage(i + 1)"
+    >
+      {{ i + 1 }}
+    </button>
+    <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages()">Next</button>
+  </nav>
 </div>

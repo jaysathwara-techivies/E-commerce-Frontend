@@ -19,7 +19,7 @@ export class ChangeProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    let profile:any = sessionStorage.getItem('credentials')
+    let profile:any = localStorage.getItem('credentials')
     this.userId = JSON.parse(profile)._id
     this.name.patchValue(JSON.parse(profile).name)
   }
@@ -27,19 +27,19 @@ export class ChangeProfileComponent implements OnInit{
   updateName() {
     console.log(this.name.value);
     return new Promise((resolve, reject)=>{
-      let url =  `http://localhost:5000/profile/${this.userId}`
+      let url =  `http://localhost:3000/profile/${this.userId}`
       let payload = {
         name: this.name.value
       }
 
       this.authService.apiCall('POST', url, payload).subscribe(
         async (response: any) =>{
-          let profile:any = sessionStorage.getItem('credentials')
+          let profile:any = localStorage.getItem('credentials')
           if (profile) {
             profile = JSON.parse(profile)
             console.log('profile: ', profile);
             profile.name = response.name
-            sessionStorage.setItem('credentials', JSON.stringify(profile));
+            localStorage.setItem('credentials', JSON.stringify(profile));
           }
           this.utilService.openSnackBar({
             text: 'Profile Name Changed',

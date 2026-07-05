@@ -25,12 +25,13 @@ export class DashboardComponent implements OnInit{
   }
   async ngOnInit() {
     await this.getProducts()
+    await this.fetchWhishlist()
   }
 
   getProducts() {
     return new Promise((resolve,reject) => {
 
-      let uri = 'http://localhost:5000/api/most-selling-product'
+      let uri = 'http://localhost:3000/api/most-selling-product'
       this.authService.apiCall('GET', uri ).subscribe(
       async (response: any) =>{
         if (response) {
@@ -58,17 +59,12 @@ export class DashboardComponent implements OnInit{
 
   addToWishlist(id:any){
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/wishlist`
-      let token:any  = sessionStorage.getItem('credentials')
-      const headers:any = new HttpHeaders({
-        'Authorization': `Bearer ${JSON.parse(token).token}`,
-        
-      });
+      let url = `http://localhost:3000/wishlist`
       let payload ={
-        user: JSON.parse(sessionStorage.getItem('credentials') || '{}')._id,
+        user: JSON.parse(localStorage.getItem('credentials') || '{}')._id,
         productId : id
       }
-      this.authService.apiCall('POST', url, payload, headers).subscribe(
+      this.authService.apiCall('POST', url, payload).subscribe(
         async (response:any) =>{
           this.wishlist = new Set(response.products.map((product: any) => product._id));
           this.utilService.openSnackBar({
@@ -94,12 +90,12 @@ export class DashboardComponent implements OnInit{
 
   removeFromWishlist(productId:any) {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
       }
-      const url = `http://localhost:5000/wishlist/${productId}?user=${user}`;    
+      const url = `http://localhost:3000/wishlist/${productId}?user=${user}`;    
         this.authService.apiCall('DELETE', url, null).subscribe(
         async (response:any) =>{
           this.wishlist.delete(productId);
@@ -121,13 +117,13 @@ export class DashboardComponent implements OnInit{
   }
   fetchWhishlist() {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
       }
 
-      const url = `http://localhost:5000/wishlist?user=${user}`;    
+      const url = `http://localhost:3000/get-wishlist?user=${user}`;    
         this.authService.apiCall('GET', url, null).subscribe(
         async (response:any) =>{
           this.wishlist = new Set(response.products.map((product: any) => product._id));

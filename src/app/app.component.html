@@ -3,6 +3,6 @@
 
     </div>
     
-    <div class="page-content">
+    <div class="page-content" [class.page-content--auth]="isAuthRoute()">
         <router-outlet></router-outlet>
       </div>

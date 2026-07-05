@@ -1,32 +1,47 @@
-<table>
-    <thead>
-      <tr>
-        <th (click)="sortBy('id')">ID</th>
-        <th (click)="sortBy('name')">Name</th>
-        <th (click)="sortBy('email')">Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let employee of employees; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ employee.name }}</td>
-        <td>{{ employee.email }}</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <div>
-    <button (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
-    <button *ngFor="let page of totalPages" [disabled]="page === currentPage" (click)="onPageChange(page)">
-        {{ page }}
-      </button>
-    <button (click)="onNextPage()" [disabled]="currentPage === totalPages.length">Next</button>
-    <select [(ngModel)]="limit" (change)="onLimitChange()">
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-      </select>
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Employees</h1>
+      <p class="page-subtitle">Team directory</p>
+    </div>
+  </header>
 
+  <div class="data-table-wrap" *ngIf="employees.length > 0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th (click)="sortBy('id')" style="cursor: pointer">#</th>
+          <th (click)="sortBy('name')" style="cursor: pointer">Name</th>
+          <th (click)="sortBy('email')" style="cursor: pointer">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.email }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  
+
+  <nav class="ui-pagination" aria-label="Pagination">
+    <button type="button" (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+    <button
+      type="button"
+      *ngFor="let page of totalPages"
+      [class.active]="page === currentPage"
+      [disabled]="page === currentPage"
+      (click)="onPageChange(page)"
+    >
+      {{ page }}
+    </button>
+    <button type="button" (click)="onNextPage()" [disabled]="currentPage === totalPages.length">Next</button>
+    <select [(ngModel)]="limit" (change)="onLimitChange()" aria-label="Rows per page">
+      <option [value]="10">10</option>
+      <option [value]="15">15</option>
+      <option [value]="20">20</option>
+      <option [value]="30">30</option>
+    </select>
+  </nav>
+</div>

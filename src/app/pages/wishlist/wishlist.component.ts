@@ -22,13 +22,13 @@ export class WishlistComponent implements OnInit {
 
   fetchWhishlist() {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
       }
 
-      const url = `http://localhost:5000/wishlist?user=${user}`;    
+      const url = `http://localhost:3000/get-wishlist?user=${user}`;    
         this.authService.apiCall('GET', url, null).subscribe(
         async (response:any) =>{
           this.wishlist = response.products;
@@ -42,12 +42,12 @@ export class WishlistComponent implements OnInit {
   }
    removeFromWishlist(productId:any) {
     return new Promise((resolve,reject) =>{
-      const user = JSON.parse(sessionStorage.getItem('credentials') || '{}')._id;
+      const user = JSON.parse(localStorage.getItem('credentials') || '{}')._id;
       if (!user) {
           reject('User ID not found in local storage');
           return;
       }
-      const url = `http://localhost:5000/wishlist/${productId}?user=${user}`;    
+      const url = `http://localhost:3000/wishlist/${productId}?user=${user}`;    
         this.authService.apiCall('DELETE', url, null).subscribe(
         async (response:any) =>{
           // this.wishlist.delete(productId);

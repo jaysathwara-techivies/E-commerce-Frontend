@@ -1,47 +1,102 @@
-<h1 mat-dialog-title>Cart Items</h1>
-<div mat-dialog-content>
-  <div *ngIf="cartItems.length > 0; else emptyCart">
-    <div *ngFor="let item of cartItems" class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
-      <div class="d-flex align-items-center">
-        <img [src]="item.img" alt="{{item.name}}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
-        <div>
-          <h6 class="mb-0">{{item.name}}</h6>
-          <small class="text-muted">{{item.description}}</small>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <button mat-icon-button (click)="decrementQuantity(item)" class="btn btn-outline-secondary btn-sm">
-          <mat-icon>remove</mat-icon>
-        </button>
-        <span class="mx-2">{{ item.quantity }}</span>
-        <button mat-icon-button (click)="incrementQuantity(item)" class="btn btn-outline-secondary btn-sm">
-          <mat-icon>add</mat-icon>
-        </button>
-        <div class="ms-3">
-          <span class="text-muted">₹{{item.price * item.quantity}}</span>
-        </div>
-      </div>
-      <div style="cursor: pointer;">
-        <button (click)="deleteItem(item)" class="btn btn-outline-danger btn-sm">
-          <mat-icon>delete</mat-icon>
-        </button>
+<div class="cart-panel">
+  <header class="cart-panel__header">
+    <div class="cart-panel__title">
+      <span class="cart-panel__icon" aria-hidden="true">
+        <mat-icon>shopping_bag</mat-icon>
+      </span>
+      <div>
+        <h2 class="cart-panel__heading">Your cart</h2>
+        <p class="cart-panel__meta" *ngIf="cartItems.length">
+          {{ cartCount }} {{ cartCount === 1 ? 'item' : 'items' }}
+        </p>
       </div>
     </div>
-    <!-- <div class="total-count">
-      <p *ngIf="!discount">Item Total: {{ calculateTotal() | currency }}</p>
-      <p *ngIf="discount">Total: {{ calculateTotal() | currency }}</p>
-      <p *ngIf="discount">Coupon Discount: {{ discount  }}%</p>
-    </div> -->
+    <button
+      type="button"
+      class="cart-panel__close"
+      (click)="closeModal()"
+      mat-dialog-close
+      aria-label="Close cart"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="cart-panel__body" mat-dialog-content>
+    <ng-container *ngIf="cartItems.length; else emptyCart">
+      <article class="cart-item" *ngFor="let item of cartItems; trackBy: trackByItemId">
+        <img
+          class="cart-item__image"
+          [src]="item.img ? item.img : item.productDetails?.img"
+          [alt]=" item.name ? item.name : item.productDetails?.name"
+        />
+        <div class="cart-item__details">
+          <h3 class="cart-item__name">{{ item.name ? item.name : item.productDetails?.name }}</h3>
+          <p class="cart-item__unit-price">₹{{ getUnitPrice(item) }} each</p>
+          <div class="cart-item__controls">
+            <div class="qty-stepper" role="group" aria-label="Quantity">
+              <button
+                type="button"
+                class="qty-stepper__btn"
+                (click)="decrementQuantity(item)"
+                [disabled]="item.totalQuantity <= 1"
+                aria-label="Decrease quantity"
+              >
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span class="qty-stepper__value">{{ item.totalQuantity }}</span>
+              <button
+                type="button"
+                class="qty-stepper__btn"
+                (click)="incrementQuantity(item)"
+                [disabled]="item.totalQuantity >= getMaxStock(item)"
+                aria-label="Increase quantity"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <button
+              type="button"
+              class="cart-item__remove"
+              (click)="deleteItem(item)"
+              aria-label="Remove item"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+        <p class="cart-item__line-total">₹{{ getLineTotal(item) }}</p>
+      </article>
+    </ng-container>
+
+    <ng-template #emptyCart>
+      <div class="cart-empty">
+        <span class="cart-empty__icon" aria-hidden="true">
+          <mat-icon>remove_shopping_cart</mat-icon>
+        </span>
+        <h3 class="cart-empty__title">Your cart is empty</h3>
+        <p class="cart-empty__text">Add items from the store to see them here.</p>
+        <button type="button" class="cart-empty__cta" (click)="closeModal()" mat-dialog-close>
+          Browse products
+        </button>
+      </div>
+    </ng-template>
   </div>
-  <ng-template #emptyCart>
-    <p class="text-center">Your cart is empty.</p>
-  </ng-template>
-</div>
-<div mat-dialog-actions class="d-flex justify-content-between">
-  <button mat-button (click)="closeModal()" mat-dialog-close class="btn btn-secondary">Close</button>
-  <!-- <div *ngIf="cartItems.length">
-    <label for="add">Default Address:</label>
-    <input type="checkbox" name="add" id="" (change)="onChecck($event)">
-    </div> -->
-  <button mat-button (click)="submit()" class="btn btn-primary" [disabled]="!cartItems.length">Checkout</button>
+
+  <footer class="cart-panel__footer" mat-dialog-actions *ngIf="cartItems.length">
+    <div class="cart-summary">
+      <span class="cart-summary__label">Subtotal</span>
+      <span class="cart-summary__amount">₹{{ calculateTotal() }}</span>
+    </div>
+    <p class="cart-summary__note">Shipping and taxes calculated at checkout.</p>
+    <div class="cart-panel__actions">
+      <button type="button" class="btn-ghost" (click)="closeModal()" mat-dialog-close>
+        Continue shopping
+      </button>
+      <button type="button" class="btn-checkout" (click)="submit()">
+        Checkout
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </footer>
 </div>

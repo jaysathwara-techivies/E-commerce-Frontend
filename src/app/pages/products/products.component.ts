@@ -38,7 +38,7 @@ export class ProductsComponent implements OnInit {
 
   getProducts(): void {
     this.isLoading = true;
-    const uri = 'http://localhost:5000/api/products';
+    const uri = 'http://localhost:3000/api/products';
     this.authService.apiCall('GET', uri).subscribe({
       next: (response: any) => {
         this.products = response || [];

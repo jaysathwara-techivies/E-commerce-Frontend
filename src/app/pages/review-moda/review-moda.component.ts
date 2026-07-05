@@ -26,7 +26,7 @@ ratingOptions: any;
   }
 
   async ngOnInit() {
-    this.userId = sessionStorage.getItem('credentials')
+    this.userId = localStorage.getItem('credentials')
     this.userId = JSON.parse(this.userId)._id
     console.log('this.userId: ', this.userId);
     console.log(this.data);
@@ -43,7 +43,7 @@ ratingOptions: any;
   getReview(productId:any) {
     return new Promise((resolve,reject) => {
 
-      let uri = `http://localhost:5000/review?productId=${productId}`
+      let uri = `http://localhost:3000/review?productId=${productId}`
       this.authService.apiCall('GET', uri ).subscribe(
       async (response: any) =>{
         if (response) {
@@ -65,7 +65,7 @@ ratingOptions: any;
     console.log(this.reviewFormMode);
     
     return new Promise((resolve, reject) => {
-      let user: any = sessionStorage.getItem('credentials');
+      let user: any = localStorage.getItem('credentials');
       let url = '';
       let payload = {
         ...this.reviewForm.value,
@@ -75,7 +75,7 @@ ratingOptions: any;
   
       if (this.reviewFormMode.includes('edit')) {
         // If editing an existing review, make a PATCH request
-        url = `http://localhost:5000/review/${this.reviewFormData._id}`;
+        url = `http://localhost:3000/review/${this.reviewFormData._id}`;
         this.authService.apiCall('PUT', url, payload).subscribe(
           async (response: any) => {
             alert('Review updated successfully');
@@ -91,7 +91,7 @@ ratingOptions: any;
         );
       } else {
         // If adding a new review, make a POST request
-        url = 'http://localhost:5000/review';
+        url = 'http://localhost:3000/review';
         this.authService.apiCall('POST', url, payload).subscribe(
           async (response: any) => {
             alert('Review added successfully');
@@ -109,7 +109,7 @@ ratingOptions: any;
   
   deleteReview(review:any) {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/review/${review._id}`
+      let url = `http://localhost:3000/review/${review._id}`
       this.authService.apiCall('DELETE',url, null).subscribe(
         async (response:any) =>{
           this.reviews = response

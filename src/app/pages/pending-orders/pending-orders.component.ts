@@ -26,7 +26,7 @@ export class PendingOrdersComponent implements OnInit {
 
   getOrders() {
     return new Promise((resolve, reject) =>{
-      let url = `http://localhost:5000/api/order?status=pending`
+      let url = `http://localhost:3000/api/order?status=pending`
       this.authService.apiCall('GET', url, null).subscribe(
         async(response: any) =>{
           this.orders = response
@@ -72,7 +72,7 @@ export class PendingOrdersComponent implements OnInit {
     console.log(order._id);
     return new Promise((resolve, reject) =>{
   
-      let url = `http://localhost:5000/api/order/${order._id}/cancel`
+      let url = `http://localhost:3000/api/order/${order._id}/cancel`
   
       this.authService.apiCall('POST', url, null,).subscribe(
         async (response:any) =>{
@@ -101,7 +101,7 @@ export class PendingOrdersComponent implements OnInit {
     console.log(order._id);
     return new Promise((resolve, reject) =>{
   
-      let url = `http://localhost:5000/api/order/${order._id}/ship`
+      let url = `http://localhost:3000/api/order/${order._id}/ship`
   
       this.authService.apiCall('POST', url, null,).subscribe(
         async (response:any) =>{

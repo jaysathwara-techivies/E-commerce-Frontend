@@ -1,67 +1,62 @@
-<div class="checkout-container">
-  <div class="product-summary">
-    <div *ngFor="let item of checkOutItems">
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Checkout</h1>
+      <p class="page-subtitle">Review your order and complete payment</p>
+    </div>
+  </header>
 
-      <h2>Pay</h2>
-      <h3>₹{{item.total}}</h3>
-      <div class="product-list" *ngFor="let product of item.items">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center">
-            <img [src]="product.img" alt="{{product.name}}" class="img-thumbnail me-3"
-              style="width: 100px; height: 100px;">
-            <h6 class="mb-0">{{product.name}}</h6>
-          </div>
-          <div>
-            <span>{{product.price}} X {{product.quantity}}</span>
-          </div>
-          <div class="ms-3">
-            <span class="text-muted">₹{{product.price * product.quantity}}</span>
-          </div>
+  <div class="checkout-page">
+    <div class="checkout-panel" *ngFor="let item of checkOutItems">
+      <h2>Order summary</h2>
+      <p style="font-size: 28px; font-weight: 700; color: #6366f1; margin: 0 0 20px">₹{{ item.total }}</p>
+
+      <div class="checkout-product" *ngFor="let product of item.items">
+        <img [src]="product.img" [alt]="product.name" />
+        <div class="checkout-product__info">
+          <h6>{{ product.name }}</h6>
+          <span>₹{{ product.price }} × {{ product.quantity }}</span>
         </div>
-
+        <strong>₹{{ product.price * product.quantity }}</strong>
       </div>
-      <div class="mt-5">
 
-        <div class="subtotal">
-          <span>Subtotal</span>
-          <span>{{subtotal}}</span>
-        </div>
-        <div class="discount d-flex justify-content-between" *ngIf="discount">
-          <span>discount%</span>
-          <span>-{{discountedAmount}}</span>
-        </div>
-        <div class="total-due">
-          <span>Total</span>
-          <span>{{ discount ? calculateTotal() : subtotal}}</span>
-        </div>
-        <div class="coupon input-group">
-          <input type="text" class="form-control" [formControl]="code" placeholder="coupon code" matInput>
-          <button class="btn btn-primary" (click)="applyCode()">Apply Code</button>
-        </div>
+      <div class="checkout-line"><span>Subtotal</span><span>₹{{ subtotal }}</span></div>
+      <div class="checkout-line" *ngIf="discount"><span>Discount</span><span>-₹{{ discountedAmount }}</span></div>
+      <div class="checkout-line checkout-line--total">
+        <span>Total due</span>
+        <span>₹{{ discount ? calculateTotal() : subtotal }}</span>
+      </div>
+
+      <div class="coupon-row">
+        <input type="text" [formControl]="code" placeholder="Coupon code" />
+        <button type="button" class="ui-btn ui-btn--primary" (click)="applyCode()">Apply</button>
       </div>
     </div>
-  </div>
-  <div class="payment-section">
-    <button mat-raised-button color="primary" class="apple-pay-btn">Google Pay</button>
-    <p>Or pay with card</p>
-    <form>
-      <section>
-        <mat-label>Default address</mat-label>
-    <mat-checkbox  type="checkbox" name="add" id="" (change)="onChecck($event)"></mat-checkbox>
-      </section>
-      <mat-form-field appearance="fill">
-        <mat-label>Address</mat-label>
-        <input matInput type="text" [formControl]="defaultAddress" required>
-      </mat-form-field>
-      <h3>Payment details</h3>
-      <ngx-stripe-card
-      [options]="cardOptions"
-      [elementsOptions]="elementsOptions"
-      #cardComponent>
-    </ngx-stripe-card>
-    <button (click)="handlePayment()">Pay</button>
 
-      <!-- <button mat-raised-button color="primary" type="submit" (click)="submit()">Buy Now</button> -->
-    </form>
+    <div class="checkout-panel">
+      <h2>Payment</h2>
+      <button type="button" class="ui-btn ui-btn--primary ui-btn--block" style="background: #111; margin-bottom: 16px">
+        Google Pay
+      </button>
+      <p style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px">Or pay with card</p>
+
+      <form>
+        <div style="margin-bottom: 16px">
+          <mat-checkbox (change)="onChecck($event)">Use default address</mat-checkbox>
+        </div>
+        <mat-form-field appearance="outline" class="auth-field">
+          <mat-label>Shipping address</mat-label>
+          <input matInput type="text" [formControl]="defaultAddress" required />
+          <mat-icon matPrefix>location_on</mat-icon>
+        </mat-form-field>
+
+        <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 12px">Card details</h3>
+        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" #cardComponent></ngx-stripe-card>
+
+        <button type="button" class="ui-btn ui-btn--primary ui-btn--block" style="margin-top: 24px" (click)="handlePayment()">
+          Pay now
+        </button>
+      </form>
+    </div>
   </div>
 </div>
